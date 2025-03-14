@@ -1,0 +1,57 @@
+---
+// src/components/AchievementCard.astro
+import type { Achievement } from '../types';
+
+interface Props {
+  achievement: Achievement;
+}
+
+const { achievement } = Astro.props;
+const isHidden = achievement.hidden || false;
+
+// Format date based on showFullDate preference
+const formattedDate = achievement.showFullDate 
+  ? new Date(achievement.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+  : achievement.date;
+---
+
+{!isHidden && (
+  <a 
+    href={achievement.url}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 border-l-4 border-green-500"
+    data-track="true"
+    data-id={achievement.id}
+    data-hidden={isHidden}
+    data-type="achievement"
+    data-description={achievement.description}
+  >
+    <div class="flex items-start">
+      <div class="mr-3 text-green-500 text-xl">
+        <i class={achievement.icon}></i>
+      </div>
+      <div>
+        <h3 class="font-medium text-gray-900">{achievement.title}</h3>
+        <p class="text-sm text-gray-600 mt-1">{achievement.description}</p>
+        <p class="text-xs text-gray-500 mt-2">{formattedDate}</p>
+      </div>
+    </div>
+  </a>
+)}
+
+{isHidden && (
+  <script define:vars={{ achievement }}>
+    console.log(
+      '%c🏆 Hidden Achievement Found: ' + achievement.title,
+      'color: #4ade80; font-weight: bold; font-size: 14px;'
+    );
+    console.log({
+      id: achievement.id,
+      title: achievement.title,
+      url: achievement.url,
+      description: achievement.description,
+      date: achievement.date
+    });
+  </script>
+)}

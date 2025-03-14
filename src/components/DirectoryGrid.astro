@@ -1,0 +1,24 @@
+---
+// src/components/DirectoryGrid.astro
+import ProfileCard from './ProfileCard.astro';
+import type { Profile } from '../types';
+
+interface Props {
+  profiles: Profile[];
+}
+
+const { profiles } = Astro.props;
+---
+
+{profiles.length === 0 ? (
+  <div class="text-center py-12">
+    <h2 class="text-2xl font-semibold text-gray-700">No profiles available</h2>
+    <p class="mt-2 text-gray-500">Check back later for awesome profiles!</p>
+  </div>
+) : (
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {profiles.map(profile => (
+      <ProfileCard profile={profile} />
+    ))}
+  </div>
+)}

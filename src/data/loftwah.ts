@@ -10,7 +10,7 @@ export const loftwah: Profile = {
   bannerUrl: bannerImage,
   ogImageUrl: '/images/loftwah_og.jpg',
   ogTitle: "Dean Lofts (Loftwah) - Single Dad and Senior DevOps Engineer",
-  ogDescription: "Connect with Dean Lofts, a developer, creator, and tech enthusiast. Explore my projects, content, and social links all in one place.",
+  ogDescription: "Connect with Dean Lofts, a developer, CTO, creator, and tech enthusiast. Explore my projects, content, and social links all in one place.",
   bio: "Creator of Linkarooie, DevOps Engineer. Hit me up on Twitter (@loftwah).",
   tags: [
     "AWS",

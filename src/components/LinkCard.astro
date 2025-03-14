@@ -1,0 +1,50 @@
+---
+// src/components/LinkCard.astro
+import type { Link } from '../types';
+
+interface Props {
+  link: Link;
+}
+
+const { link } = Astro.props;
+const isHidden = link.hidden || false;
+---
+
+{!isHidden && (
+  <a 
+    href={link.url}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
+    data-track="true"
+    data-id={link.id}
+    data-hidden={isHidden}
+    data-type="link"
+    data-description={link.description}
+  >
+    <div class="flex items-start">
+      <div class="mr-3 text-blue-500 text-xl">
+        <i class={link.icon}></i>
+      </div>
+      <div>
+        <h3 class="font-medium text-gray-900">{link.title}</h3>
+        <p class="text-sm text-gray-600 mt-1">{link.description}</p>
+      </div>
+    </div>
+  </a>
+)}
+
+{isHidden && (
+  <script define:vars={{ link }}>
+    console.log(
+      '%c🔗 Hidden Link Found: ' + link.title,
+      'color: #ff6b6b; font-weight: bold; font-size: 14px;'
+    );
+    console.log({
+      id: link.id,
+      title: link.title,
+      url: link.url,
+      description: link.description
+    });
+  </script>
+)}
