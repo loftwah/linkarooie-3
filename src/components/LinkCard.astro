@@ -134,6 +134,8 @@ const isHidden = link.hidden || false;
           };
           closeBtn.onclick = function() {
             document.body.removeChild(overlay);
+            // Restore scrolling on body
+            document.body.style.overflow = '';
           };
           container.appendChild(closeBtn);
           
