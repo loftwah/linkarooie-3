@@ -189,49 +189,86 @@ const posthogHost = import.meta.env.POSTHOG_HOST || 'https://us.i.posthog.com';
       });
     </script>
     
-    <!-- PostHog Analytics - Plain JS, no imports -->
+    <!-- PostHog Analytics - Enhanced tracking -->
     <script is:inline define:vars={{ posthogKey, posthogHost, username }}>
       // PostHog configuration
       !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
       
       function initPosthog() {
-        // Initialize PostHog with the provided key
+        // Initialize PostHog with maximum data collection
         posthog.init(posthogKey, {
           api_host: posthogHost,
-          capture_pageview: false,
-          person_profiles: 'identified_only'
+          capture_pageview: true, // Enable automatic pageview tracking
+          capture_pageleave: true, // Track when users leave pages
+          session_recording: {
+            enabled: true,
+            maskAllInputs: false // Don't mask any inputs
+          },
+          autocapture: true // Track all clicks, form submissions, etc. automatically
         });
         
-        // Capture page view with profile info
+        // Track additional data points
         posthog.capture('page_view', {
           profile: username || 'home',
           path: window.location.pathname,
           url: window.location.href,
           title: document.title,
           referrer: document.referrer,
-          is_bot: /bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent)
+          screen_size: {
+            width: window.innerWidth,
+            height: window.innerHeight
+          },
+          user_agent: navigator.userAgent,
+          language: navigator.language,
+          timestamp: new Date().toISOString()
         });
       }
       
-      // Initialize PostHog on initial load
+      // Track everything possible
       document.addEventListener('DOMContentLoaded', () => {
         initPosthog();
         
-        // Track link and achievement clicks
+        // Track ALL clicks, not just links
         document.addEventListener('click', (e) => {
-          const linkEl = e.target.closest('a[data-track="true"]');
-          if (linkEl) {
-            const linkId = linkEl.getAttribute('data-id');
-            const isHidden = linkEl.getAttribute('data-hidden') === 'true';
-            const type = linkEl.getAttribute('data-type') || 'link';
-            
-            posthog.capture(`${type}_click`, {
-              id: linkId,
-              url: linkEl.href,
-              text: linkEl.innerText,
-              hidden: isHidden,
-              profile: username || 'home'
+          const element = e.target;
+          posthog.capture('element_click', {
+            element_type: element.tagName,
+            element_id: element.id,
+            element_class: element.className,
+            element_text: element.innerText,
+            element_position: {
+              x: e.clientX,
+              y: e.clientY
+            },
+            page: window.location.pathname
+          });
+        });
+
+        // Track mouse movements
+        let lastCaptureTime = 0;
+        document.addEventListener('mousemove', (e) => {
+          const now = Date.now();
+          if (now - lastCaptureTime > 1000) { // Throttle to once per second
+            posthog.capture('mouse_movement', {
+              position_x: e.clientX,
+              position_y: e.clientY
             });
+            lastCaptureTime = now;
+          }
+        });
+
+        // Track scrolling behavior
+        let lastScrollTime = 0;
+        window.addEventListener('scroll', () => {
+          const now = Date.now();
+          if (now - lastScrollTime > 1000) { // Throttle to once per second
+            posthog.capture('page_scroll', {
+              scroll_x: window.scrollX,
+              scroll_y: window.scrollY,
+              max_scroll: document.documentElement.scrollHeight,
+              percent_scrolled: (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100).toFixed(2)
+            });
+            lastScrollTime = now;
           }
         });
       });
