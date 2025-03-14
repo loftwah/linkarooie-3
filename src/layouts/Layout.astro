@@ -22,6 +22,10 @@ const {
 
 // Handle both imported image objects and string paths
 const ogImageUrl = typeof ogImage === 'string' ? ogImage : ogImage.src;
+
+// Get environment variables for PostHog
+const posthogKey = import.meta.env.POSTHOG_KEY || 'phc_BrmIHTxcm8cDyDjAGkWAimepYqJhSaXiXIVDBeMOHUM';
+const posthogHost = import.meta.env.POSTHOG_HOST || 'https://us.i.posthog.com';
 ---
 
 <!DOCTYPE html>
@@ -44,21 +48,41 @@ const ogImageUrl = typeof ogImage === 'string' ? ogImage : ogImage.src;
     <meta property="og:image" content={ogImageUrl} />
     <meta property="twitter:card" content="summary_large_image" />
     
+    <!-- Dark mode script - Must be inline and run before any rendering -->
+    <script is:inline>
+      // On page load, check local storage or system preference
+      function updateTheme() {
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      }
+      
+      // Initial theme check
+      updateTheme();
+    </script>
+    
     <ViewTransitions />
   </head>
-  <body class="min-h-screen flex flex-col bg-gray-50">
-    <header class="bg-white shadow-sm">
+  <body class="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+    <header class="bg-white dark:bg-gray-800 shadow-sm transition-colors duration-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
           <div class="flex">
             <div class="flex-shrink-0 flex items-center">
-              <a href="/" class="text-xl font-bold text-blue-600">
+              <a href="/" class="text-xl font-bold text-blue-600 dark:text-blue-400">
                 Linkarooie
               </a>
             </div>
           </div>
-          <div class="flex items-center">
-            <a href="https://github.com/loftwah/linkarooie" target="_blank" rel="noopener" class="text-gray-500 hover:text-gray-700">
+          <div class="flex items-center space-x-4">
+            <!-- Dark mode toggle -->
+            <button id="theme-toggle" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm p-2 transition-colors duration-200" aria-label="Toggle dark mode">
+              <i id="theme-toggle-dark-icon" class="fas fa-moon hidden"></i>
+              <i id="theme-toggle-light-icon" class="fas fa-sun hidden"></i>
+            </button>
+            <a href="https://github.com/loftwah/linkarooie" target="_blank" rel="noopener" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200">
               <span class="sr-only">GitHub</span>
               <i class="fab fa-github text-lg"></i>
             </a>
@@ -71,39 +95,112 @@ const ogImageUrl = typeof ogImage === 'string' ? ogImage : ogImage.src;
       <slot />
     </main>
     
-    <footer class="bg-white border-t border-gray-200 py-6">
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-6 transition-colors duration-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col md:flex-row justify-between items-center">
           <div class="mb-4 md:mb-0">
-            <p class="text-gray-500">
+            <p class="text-gray-500 dark:text-gray-400">
               &copy; {new Date().getFullYear()} Linkarooie
             </p>
           </div>
           <div>
-            <p class="text-gray-500">
-              Made with 💙 by <a href="https://github.com/loftwah" class="text-blue-600 hover:underline">Loftwah</a>
+            <p class="text-gray-500 dark:text-gray-400">
+              Made with 💙 by <a href="https://github.com/loftwah" class="text-blue-600 dark:text-blue-400 hover:underline">Loftwah</a>
             </p>
           </div>
         </div>
       </div>
     </footer>
     
-    <!-- PostHog Analytics -->
-    <script define:vars={{ username }}>
+    <!-- Theme Toggle Script - Plain JS, no imports -->
+    <script is:inline>
+      // Set up the theme toggle functionality after page load
+      document.addEventListener('DOMContentLoaded', () => {
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+        // Set initial icon state
+        if (document.documentElement.classList.contains('dark')) {
+          themeToggleLightIcon.classList.remove('hidden');
+          themeToggleDarkIcon.classList.add('hidden');
+        } else {
+          themeToggleDarkIcon.classList.remove('hidden');
+          themeToggleLightIcon.classList.add('hidden');
+        }
+
+        // Toggle theme on click
+        themeToggleBtn.addEventListener('click', () => {
+          // Toggle the dark class
+          document.documentElement.classList.toggle('dark');
+          
+          // Update icons
+          themeToggleDarkIcon.classList.toggle('hidden');
+          themeToggleLightIcon.classList.toggle('hidden');
+          
+          // Save preference to localStorage
+          if (document.documentElement.classList.contains('dark')) {
+            localStorage.theme = 'dark';
+          } else {
+            localStorage.theme = 'light';
+          }
+        });
+      });
+
+      // Handle view transitions - important for Astro's page transitions
+      document.addEventListener('astro:after-swap', () => {
+        // Re-apply the theme after page navigation
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+
+        // Re-initialize the toggle button after page navigation
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+        if (themeToggleBtn && themeToggleDarkIcon && themeToggleLightIcon) {
+          // Set correct icon visibility
+          if (document.documentElement.classList.contains('dark')) {
+            themeToggleLightIcon.classList.remove('hidden');
+            themeToggleDarkIcon.classList.add('hidden');
+          } else {
+            themeToggleDarkIcon.classList.remove('hidden');
+            themeToggleLightIcon.classList.add('hidden');
+          }
+          
+          // Re-attach click event
+          themeToggleBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+            
+            if (document.documentElement.classList.contains('dark')) {
+              localStorage.theme = 'dark';
+            } else {
+              localStorage.theme = 'light';
+            }
+          });
+        }
+      });
+    </script>
+    
+    <!-- PostHog Analytics - Plain JS, no imports -->
+    <script is:inline define:vars={{ username, posthogKey, posthogHost }}>
+      // PostHog initialization script
       !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId captureTraceFeedback captureTraceMetric".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
       
-      // Using exact environment variable names as in your .env file
-      const POSTHOG_KEY = import.meta.env.POSTHOG_KEY || 'phc_BrmIHTxcm8cDyDjAGkWAimepYqJhSaXiXIVDBeMOHUM';
-      const POSTHOG_HOST = import.meta.env.POSTHOG_HOST || 'https://us.i.posthog.com';
-      
-      posthog.init(POSTHOG_KEY, {
-        api_host: POSTHOG_HOST,
-        capture_pageview: false,
-        person_profiles: 'identified_only'
-      });
-      
-      // Capture page view with profile info
-      document.addEventListener('DOMContentLoaded', () => {
+      function initPosthog() {
+        // Initialize PostHog with the provided key
+        posthog.init(posthogKey, {
+          api_host: posthogHost,
+          capture_pageview: false,
+          person_profiles: 'identified_only'
+        });
+        
+        // Capture page view with profile info
         posthog.capture('page_view', {
           profile: username || 'home',
           path: window.location.pathname,
@@ -112,22 +209,60 @@ const ogImageUrl = typeof ogImage === 'string' ? ogImage : ogImage.src;
           referrer: document.referrer,
           is_bot: /bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent)
         });
+      }
+      
+      // Initialize PostHog on initial load
+      document.addEventListener('DOMContentLoaded', () => {
+        initPosthog();
+        
+        // Track link and achievement clicks
+        document.addEventListener('click', (e) => {
+          const linkEl = e.target.closest('a[data-track="true"]');
+          if (linkEl) {
+            const linkId = linkEl.getAttribute('data-id');
+            const isHidden = linkEl.getAttribute('data-hidden') === 'true';
+            const type = linkEl.getAttribute('data-type') || 'link';
+            
+            posthog.capture(`${type}_click`, {
+              id: linkId,
+              url: linkEl.href,
+              text: linkEl.innerText,
+              hidden: isHidden,
+              profile: username || 'home'
+            });
+          }
+        });
       });
       
-      // Track link and achievement clicks
-      document.addEventListener('click', (e) => {
-        const linkEl = e.target.closest('a[data-track="true"]');
-        if (linkEl) {
-          const linkId = linkEl.getAttribute('data-id');
-          const isHidden = linkEl.getAttribute('data-hidden') === 'true';
-          const type = linkEl.getAttribute('data-type') || 'link';
+      // Re-initialize PostHog after page navigation
+      document.addEventListener('astro:after-swap', () => {
+        // Re-capture page view after navigation
+        if (window.posthog) {
+          posthog.capture('page_view', {
+            profile: username || 'home',
+            path: window.location.pathname,
+            url: window.location.href,
+            title: document.title,
+            referrer: document.referrer,
+            is_bot: /bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent)
+          });
           
-          posthog.capture(`${type}_click`, {
-            id: linkId,
-            url: linkEl.href,
-            text: linkEl.innerText,
-            hidden: isHidden,
-            profile: username || 'home'
+          // Re-attach click tracking
+          document.addEventListener('click', (e) => {
+            const linkEl = e.target.closest('a[data-track="true"]');
+            if (linkEl) {
+              const linkId = linkEl.getAttribute('data-id');
+              const isHidden = linkEl.getAttribute('data-hidden') === 'true';
+              const type = linkEl.getAttribute('data-type') || 'link';
+              
+              posthog.capture(`${type}_click`, {
+                id: linkId,
+                url: linkEl.href,
+                text: linkEl.innerText,
+                hidden: isHidden,
+                profile: username || 'home'
+              });
+            }
           });
         }
       });

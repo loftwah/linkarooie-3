@@ -42,7 +42,7 @@ const ogImage = profile.ogImageUrl;
       </div>
       
       <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
-        <div class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-white bg-white">
+        <div class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-white dark:border-gray-800 bg-white dark:bg-gray-800">
           <Image 
             src={profile.avatarUrl} 
             alt={`${profile.name}'s avatar`}
@@ -56,10 +56,10 @@ const ogImage = profile.ogImageUrl;
     
     <!-- Profile Info -->
     <div class="mt-16 md:mt-20 text-center px-4">
-      <h1 class="text-3xl font-bold text-gray-900">{profile.name}</h1>
-      <p class="text-gray-600">@{profile.username}</p>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{profile.name}</h1>
+      <p class="text-gray-600 dark:text-gray-400">@{profile.username}</p>
       
-      <p class="mt-4 text-xl text-gray-700 max-w-2xl mx-auto">{profile.description}</p>
+      <p class="mt-4 text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">{profile.description}</p>
       
       <!-- Social Links -->
       {profile.socialLinks.length > 0 && (
@@ -69,7 +69,7 @@ const ogImage = profile.ogImageUrl;
               href={social.url} 
               target="_blank" 
               rel="noopener noreferrer"
-              class="text-gray-600 hover:text-gray-900"
+              class="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300"
               data-track="true"
               data-id={`social-${social.platform}`}
               data-type="social"
@@ -85,7 +85,7 @@ const ogImage = profile.ogImageUrl;
       {profile.tags.length > 0 && (
         <div class="flex flex-wrap justify-center gap-2 mt-6">
           {profile.tags.map(tag => (
-            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">
               {tag}
             </span>
           ))}
@@ -94,7 +94,7 @@ const ogImage = profile.ogImageUrl;
       
       <!-- Analytics Link -->
       <div class="mt-6">
-        <a href={`/${profile.username}/analytics`} class="text-blue-600 hover:underline inline-flex items-center">
+        <a href={`/${profile.username}/analytics`} class="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center">
           <i class="fas fa-chart-line mr-2"></i>
           View Analytics
         </a>
@@ -103,7 +103,7 @@ const ogImage = profile.ogImageUrl;
     
     <!-- Links Section -->
     <section class="mt-12 px-4">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">Links</h2>
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Links</h2>
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         {profile.links.filter(link => !link.hidden).map(link => (
@@ -118,7 +118,7 @@ const ogImage = profile.ogImageUrl;
     
     <!-- Achievements Section -->
     <section class="mt-12 px-4">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">Achievements</h2>
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Achievements</h2>
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         {profile.achievements.filter(achievement => !achievement.hidden).map(achievement => (

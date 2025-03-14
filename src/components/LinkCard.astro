@@ -15,7 +15,7 @@ const isHidden = link.hidden || false;
     href={link.url}
     target="_blank"
     rel="noopener noreferrer"
-    class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
+    class="block p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
     data-track="true"
     data-id={link.id}
     data-hidden={isHidden}
@@ -23,12 +23,12 @@ const isHidden = link.hidden || false;
     data-description={link.description}
   >
     <div class="flex items-start">
-      <div class="mr-3 text-blue-500 text-xl">
+      <div class="mr-3 text-blue-500 dark:text-blue-400 text-xl">
         <i class={link.icon}></i>
       </div>
       <div>
-        <h3 class="font-medium text-gray-900">{link.title}</h3>
-        <p class="text-sm text-gray-600 mt-1">{link.description}</p>
+        <h3 class="font-medium text-gray-900 dark:text-white">{link.title}</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{link.description}</p>
       </div>
     </div>
   </a>
