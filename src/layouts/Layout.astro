@@ -5,6 +5,7 @@ import '../styles/global.css';
 import { ViewTransitions } from 'astro:transitions';
 import { Image } from 'astro:assets';
 import defaultOgImage from '../assets/images/linkarooie_og.jpg';
+import icon from '../assets/images/icon.png';
 
 interface Props {
   title: string;
@@ -71,7 +72,8 @@ const posthogHost = import.meta.env.POSTHOG_HOST || 'https://us.i.posthog.com';
         <div class="flex justify-between h-16">
           <div class="flex">
             <div class="flex-shrink-0 flex items-center">
-              <a href="/" class="text-xl font-bold text-blue-600 dark:text-blue-400">
+              <a href="/" class="text-xl font-bold text-blue-600 dark:text-blue-400 flex items-center">
+                <Image src={icon} alt="Linkarooie Icon" width={24} height={24} class="mr-2" />
                 Linkarooie
               </a>
             </div>
