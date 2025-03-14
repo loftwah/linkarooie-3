@@ -1,5 +1,6 @@
 ---
 // src/components/ProfileCard.astro
+import { Image } from 'astro:assets';
 import type { Profile } from '../types';
 
 interface Props {
@@ -11,10 +12,12 @@ const { profile } = Astro.props;
 
 <a href={`/${profile.username}`} class="block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
   <div class="relative aspect-square w-full overflow-hidden">
-    <img 
+    <Image 
       src={profile.avatarUrl} 
       alt={`${profile.name}'s avatar`} 
       class="w-full h-full object-cover"
+      width={300}
+      height={300}
     />
   </div>
   <div class="p-4">

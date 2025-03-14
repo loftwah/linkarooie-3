@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import LinkCard from '../components/LinkCard.astro';
 import AchievementCard from '../components/AchievementCard.astro';
+import { Image } from 'astro:assets';
 import { getProfileByUsername, getPublicProfiles } from '../data';
 
 export async function getStaticPaths() {
@@ -31,19 +32,23 @@ const ogImage = profile.ogImageUrl;
     <!-- Banner & Avatar -->
     <div class="relative">
       <div class="w-full h-48 sm:h-64 md:h-80 overflow-hidden">
-        <img 
+        <Image 
           src={profile.bannerUrl} 
           alt={`${profile.name}'s banner`}
           class="w-full h-full object-cover"
+          width={1200}
+          height={400}
         />
       </div>
       
       <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
         <div class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-white bg-white">
-          <img 
+          <Image 
             src={profile.avatarUrl} 
             alt={`${profile.name}'s avatar`}
             class="w-full h-full object-cover"
+            width={128}
+            height={128}
           />
         </div>
       </div>

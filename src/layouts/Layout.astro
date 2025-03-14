@@ -3,24 +3,24 @@
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import '../styles/global.css';
 import { ViewTransitions } from 'astro:transitions';
-// Correctly import OG image from your assets
-import ogDefaultImage from '../assets/images/linkarooie_og.jpg';
+import { Image } from 'astro:assets';
+import defaultOgImage from '../assets/images/linkarooie_og.jpg';
 
 interface Props {
   title: string;
   description?: string;
-  ogImage?: string | ImageMetadata;
+  ogImage?: any; // This can be an imported image or string
   username?: string;
 }
 
 const { 
   title, 
   description = 'Linkarooie - A Linktree-style app to showcase your profile, links, and achievements',
-  ogImage = ogDefaultImage,
+  ogImage = defaultOgImage,
   username 
 } = Astro.props;
 
-// Handle both string paths and imported images
+// Handle both imported image objects and string paths
 const ogImageUrl = typeof ogImage === 'string' ? ogImage : ogImage.src;
 ---
 
