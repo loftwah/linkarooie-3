@@ -29,7 +29,9 @@ const formattedDate = achievement.showFullDate
   >
     <div class="flex flex-col items-center">
       <h3 class="font-medium text-gray-900 dark:text-white flex items-center flex-wrap justify-center">
-        <i class={`${achievement.icon} text-[#ff9500] dark:text-[#ff9500] text-xl mr-2 transition-all duration-200 group-hover:scale-110`}></i>
+        <span class="inline-flex items-center justify-center w-6 h-6">
+          <i class={`${achievement.icon} text-[#ff9500] dark:text-[#ff9500] text-lg transition-all duration-200 group-hover:scale-110`}></i>
+        </span>
         <span class="break-words">{achievement.title}</span>
       </h3>
       <p class="text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-3 sm:line-clamp-none">{achievement.description}</p>
