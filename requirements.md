@@ -9,9 +9,8 @@ Linkarooie is a Linktree-style application that displays user profiles with link
 - There should be a nav bar and footer as part of a layout
 - There should be a profile page for each user we have a profile for
 - We should capture and display analytics for the profile pages using posthog
-- I should be able to get to the analytics page for the profile from the profile page
 - I should be able to get back to the profile page from the analytics page
-- This might not be in the profile example but a user should be able to enable or disable being part of the directory and also having their analytics tracked/displayed
+- This might not be in the profile example but a user should be able to enable or disable being part of the directory
 - Must have dark mode and light mode out of the box with a toggle that works
 
 - Must be deployable to GitHub Pages
@@ -20,7 +19,6 @@ Linkarooie is a Linktree-style application that displays user profiles with link
 - Must use Tailwind with only default classes (no custom css)
 - Root (`/`): Landing page with directory of profiles
 - `/:username`: Individual profile page (e.g., `/loftwah`)
-- `/:username/analytics`: Analytics for a specific profile
 - All profile data stored in TypeScript files
 - No database or dynamic user creation
 - A user exists if and only if there is a corresponding data file
@@ -45,17 +43,6 @@ Linkarooie is a Linktree-style application that displays user profiles with link
 - Achievements section with clickable cards and dates
 - Link to analytics page
 - Hidden content visible only in browser console
-
-### 4.3 Analytics Page
-
-- Shows analytics for a specific profile
-- Displays total page views
-- Displays unique visitors
-- Displays everything Posthog will allow us to
-- Shows browser breakdown
-- Shows geographic location breakdown
-- Displays link click statistics
-- Filters out bots and search engines
 
 ### 4.4 Hidden Content Feature
 
