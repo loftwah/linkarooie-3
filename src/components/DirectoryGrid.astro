@@ -22,11 +22,11 @@ const { profiles } = Astro.props;
   </div>
 ) : (
   <div class="flex justify-center w-full">
-    <div class={`grid gap-6 ${
+    <div class={`grid gap-4 sm:gap-6 ${
       profiles.length === 1 
-        ? 'grid-cols-1 max-w-md' 
+        ? 'grid-cols-1 max-w-sm sm:max-w-md' 
         : profiles.length === 2 
-          ? 'grid-cols-1 sm:grid-cols-2 max-w-2xl' 
+          ? 'grid-cols-1 sm:grid-cols-2 max-w-xs sm:max-w-2xl' 
           : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl'
     }`}>
       {profiles.map(profile => (

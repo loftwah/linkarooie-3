@@ -69,24 +69,24 @@ const posthogHost = import.meta.env.POSTHOG_HOST || 'https://us.i.posthog.com';
   <body class="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
     <header class="bg-gray-50 dark:bg-gray-800 shadow-md transition-colors duration-200 border-b border-gray-200 dark:border-gray-700">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
+        <div class="flex justify-between h-14 sm:h-16">
           <div class="flex">
             <div class="flex-shrink-0 flex items-center">
-              <a href="/" class="text-xl font-bold text-gray-900 dark:text-white flex items-center transition-all duration-300 hover:scale-105">
-                <Image src={icon} alt="Linkarooie Icon" width={28} height={28} class="mr-2 invert dark:invert-0 transition-all duration-200 hover:scale-110" />
+              <a href="/" class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white flex items-center transition-all duration-300 hover:scale-105">
+                <Image src={icon} alt="Linkarooie Icon" width={28} height={28} class="mr-1.5 sm:mr-2 invert dark:invert-0 transition-all duration-200 hover:scale-110" />
                 Link<span class="text-[#9333ea] dark:text-[#a5fd0e]">arooie</span>
               </a>
             </div>
           </div>
-          <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-3 sm:space-x-4">
             <!-- Dark mode toggle -->
-            <button id="theme-toggle" class="text-[#9333ea] dark:text-[#a5fd0e] hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm p-2 transition-all duration-200 hover:scale-110" aria-label="Toggle dark mode">
+            <button id="theme-toggle" class="text-[#9333ea] dark:text-[#a5fd0e] hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm p-1.5 sm:p-2 transition-all duration-200 hover:scale-110" aria-label="Toggle dark mode">
               <i id="theme-toggle-dark-icon" class="fas fa-moon hidden"></i>
               <i id="theme-toggle-light-icon" class="fas fa-sun hidden"></i>
             </button>
-            <a href="https://github.com/loftwah/linkarooie-3" target="_blank" rel="noopener" class="text-[#9333ea] dark:text-[#a5fd0e] hover:text-[#9333ea]/80 dark:hover:text-[#c7ff5a] transition-all duration-200 hover:scale-110">
+            <a href="https://github.com/loftwah/linkarooie-3" target="_blank" rel="noopener" class="text-[#9333ea] dark:text-[#a5fd0e] hover:text-[#9333ea]/80 dark:hover:text-[#c7ff5a] transition-all duration-200 hover:scale-110 p-1.5 sm:p-2">
               <span class="sr-only">GitHub</span>
-              <i class="fab fa-github text-lg"></i>
+              <i class="fab fa-github text-base sm:text-lg"></i>
             </a>
           </div>
         </div>
@@ -97,16 +97,16 @@ const posthogHost = import.meta.env.POSTHOG_HOST || 'https://us.i.posthog.com';
       <slot />
     </main>
     
-    <footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-6 transition-colors duration-200">
+    <footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4 sm:py-6 transition-colors duration-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row justify-between items-center">
-          <div class="mb-4 md:mb-0">
-            <p class="text-gray-500 dark:text-gray-400">
+        <div class="flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-2 sm:gap-0">
+          <div class="mb-2 sm:mb-0">
+            <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400">
               &copy; {new Date().getFullYear()} Linkarooie
             </p>
           </div>
           <div>
-            <p class="text-gray-700 dark:text-gray-300">
+            <p class="text-sm sm:text-base text-gray-700 dark:text-gray-300">
               Made with <span class="text-[#9333ea] dark:text-[#a5fd0e]">💚</span> by <a href="https://github.com/loftwah" class="text-[#9333ea] dark:text-[#a5fd0e] hover:text-[#9333ea]/80 dark:hover:text-[#c7ff5a] hover:underline transition-all duration-200">Loftwah</a>
             </p>
           </div>

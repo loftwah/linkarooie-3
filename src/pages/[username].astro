@@ -83,7 +83,7 @@ const ogImage = profile.ogImageUrl;
       
       <!-- Tags -->
       {profile.tags.length > 0 && (
-        <div class="flex flex-wrap justify-center gap-2 mt-6">
+        <div class="flex flex-wrap justify-center gap-2 mt-6 max-w-md mx-auto">
           {profile.tags.map(tag => (
             <span class="px-3 py-1 bg-gray-200 dark:bg-gray-800 text-[#9333ea] dark:text-[#a5fd0e] rounded-full text-sm border border-[#9333ea] dark:border-[#a5fd0e]">
               {tag}
