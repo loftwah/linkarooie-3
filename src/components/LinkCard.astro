@@ -15,7 +15,7 @@ const isHidden = link.hidden || false;
     href={link.url}
     target="_blank"
     rel="noopener noreferrer"
-    class="group block p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 border border-gray-200 dark:border-gray-700 hover:border-primary-light dark:hover:border-primary-dark text-center"
+    class="group block p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 border border-gray-200 dark:border-gray-700 hover:border-[#9333ea] dark:hover:border-[#a5fd0e] text-center"
     data-track="true"
     data-id={link.id}
     data-hidden={isHidden}
@@ -24,7 +24,7 @@ const isHidden = link.hidden || false;
   >
     <div class="flex flex-col items-center">
       <h3 class="font-medium text-gray-900 dark:text-white flex items-center">
-        <i class={`${link.icon} text-primary-light dark:text-primary-dark text-xl mr-2 transition-all duration-200 group-hover:scale-110`}></i>
+        <i class={`${link.icon} text-[#9333ea] dark:text-[#a5fd0e] text-xl mr-2 transition-all duration-200 group-hover:scale-110`}></i>
         {link.title}
       </h3>
       <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{link.description}</p>

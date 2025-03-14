@@ -11,6 +11,9 @@ export default {
           achievement: {
             light: '#ff9500', // Light mode achievement accent (orange)
             dark: '#ff9500',  // Dark mode achievement accent (same orange)
+          },
+          accent: {
+            purple: '#9333ea', // Purple accent for light mode
           }
         },
       },

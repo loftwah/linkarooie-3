@@ -20,7 +20,7 @@ const formattedDate = achievement.showFullDate
     href={achievement.url}
     target="_blank"
     rel="noopener noreferrer"
-    class="group block p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 border border-gray-200 dark:border-gray-700 hover:border-achievement-light dark:hover:border-achievement-dark border-t-4 border-t-achievement-light dark:border-t-achievement-dark text-center"
+    class="group block p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 border border-gray-200 dark:border-gray-700 hover:border-[#9333ea] dark:hover:border-[#a5fd0e] border-t-4 border-t-[#9333ea] dark:border-t-[#a5fd0e] text-center"
     data-track="true"
     data-id={achievement.id}
     data-hidden={isHidden}
@@ -29,11 +29,11 @@ const formattedDate = achievement.showFullDate
   >
     <div class="flex flex-col items-center">
       <h3 class="font-medium text-gray-900 dark:text-white flex items-center">
-        <i class={`${achievement.icon} text-achievement-light dark:text-achievement-dark text-xl mr-2 transition-all duration-200 group-hover:scale-110`}></i>
+        <i class={`${achievement.icon} text-[#9333ea] dark:text-[#a5fd0e] text-xl mr-2 transition-all duration-200 group-hover:scale-110`}></i>
         {achievement.title}
       </h3>
       <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{achievement.description}</p>
-      <p class="text-xs text-achievement-light dark:text-achievement-dark mt-2 font-medium">{formattedDate}</p>
+      <p class="text-xs text-[#9333ea] dark:text-[#a5fd0e] mt-2 font-medium">{formattedDate}</p>
     </div>
   </a>
 )}
