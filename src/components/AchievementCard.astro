@@ -42,16 +42,24 @@ const formattedDate = achievement.showFullDate
 
 {isHidden && (
   <script define:vars={{ achievement }}>
-    console.log(
-      '%c🏆 Hidden Achievement Found: ' + achievement.title,
-      'color: #a5fd0e; font-weight: bold; font-size: 14px;'
-    );
-    console.log({
-      id: achievement.id,
-      title: achievement.title,
-      url: achievement.url,
-      description: achievement.description,
-      date: achievement.date
-    });
+    // Simply store hidden achievements for later discovery via cheat code
+    if (typeof window !== 'undefined') {
+      // Initialize the hidden items collection if needed (should already be done in LinkCard.astro)
+      if (!window.__hiddenItems) {
+        window.__hiddenItems = [];
+      }
+      
+      // Add this item to the collection if not already there
+      if (!window.__hiddenItems.some(item => item.id === achievement.id && item.type === 'achievement')) {
+        window.__hiddenItems.push({
+          id: achievement.id,
+          title: achievement.title,
+          url: achievement.url,
+          description: achievement.description,
+          date: achievement.date,
+          type: 'achievement'
+        });
+      }
+    }
   </script>
 )}

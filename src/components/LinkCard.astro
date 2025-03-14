@@ -36,15 +36,157 @@ const isHidden = link.hidden || false;
 
 {isHidden && (
   <script define:vars={{ link }}>
-    console.log(
-      '%c🔗 Hidden Link Found: ' + link.title,
-      'color: #a5fd0e; font-weight: bold; font-size: 14px;'
-    );
-    console.log({
-      id: link.id,
-      title: link.title,
-      url: link.url,
-      description: link.description
-    });
+    // Simply store hidden links for later discovery via cheat code
+    if (typeof window !== 'undefined') {
+      // Initialize the hidden items collection if needed
+      if (!window.__hiddenItems) {
+        window.__hiddenItems = [];
+        
+        // Set up the cheat code detector (only once)
+        let keySequence = '';
+        const cheatCode = 'iddqd';
+        
+        document.addEventListener('keydown', function(e) {
+          // Add the key to the sequence
+          keySequence += e.key.toLowerCase();
+          
+          // Keep only the last N characters where N is the length of the cheat code
+          if (keySequence.length > cheatCode.length) {
+            keySequence = keySequence.substring(keySequence.length - cheatCode.length);
+          }
+          
+          // Check if the sequence matches the cheat code
+          if (keySequence === cheatCode) {
+            // Clear the sequence to prevent multiple triggers
+            keySequence = '';
+            
+            // Show all hidden items
+            showHiddenItemsOverlay();
+          }
+        });
+        
+        // Function to display the hidden items overlay
+        window.showHiddenItemsOverlay = function() {
+          // Check if overlay already exists
+          if (document.getElementById('hidden-items-overlay')) {
+            return;
+          }
+          
+          // Create overlay
+          const overlay = document.createElement('div');
+          overlay.id = 'hidden-items-overlay';
+          overlay.style.position = 'fixed';
+          overlay.style.top = '0';
+          overlay.style.left = '0';
+          overlay.style.width = '100%';
+          overlay.style.height = '100%';
+          overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+          overlay.style.zIndex = '10000';
+          overlay.style.overflowY = 'auto';
+          overlay.style.padding = '20px';
+          overlay.style.boxSizing = 'border-box';
+          
+          // Add title
+          const title = document.createElement('h2');
+          title.textContent = '🎮 Secret Discoveries';
+          title.style.color = '#fff';
+          title.style.textAlign = 'center';
+          title.style.marginBottom = '20px';
+          overlay.appendChild(title);
+          
+          // Create close button
+          const closeBtn = document.createElement('button');
+          closeBtn.textContent = '×';
+          closeBtn.style.position = 'absolute';
+          closeBtn.style.top = '10px';
+          closeBtn.style.right = '10px';
+          closeBtn.style.background = 'none';
+          closeBtn.style.border = 'none';
+          closeBtn.style.color = '#fff';
+          closeBtn.style.fontSize = '24px';
+          closeBtn.style.cursor = 'pointer';
+          closeBtn.onclick = function() {
+            document.body.removeChild(overlay);
+          };
+          overlay.appendChild(closeBtn);
+          
+          // Add key info
+          const keyInfo = document.createElement('p');
+          keyInfo.textContent = 'You typed the secret code: iddqd';
+          keyInfo.style.color = '#aaa';
+          keyInfo.style.textAlign = 'center';
+          keyInfo.style.marginBottom = '30px';
+          overlay.appendChild(keyInfo);
+          
+          // Container for items
+          const itemsContainer = document.createElement('div');
+          itemsContainer.style.display = 'grid';
+          itemsContainer.style.gridTemplateColumns = 'repeat(auto-fill, minmax(300px, 1fr))';
+          itemsContainer.style.gap = '20px';
+          overlay.appendChild(itemsContainer);
+          
+          // Add items to the container
+          if (window.__hiddenItems.length === 0) {
+            const noItems = document.createElement('p');
+            noItems.textContent = 'No hidden items discovered yet. Keep exploring!';
+            noItems.style.color = '#aaa';
+            noItems.style.textAlign = 'center';
+            noItems.style.gridColumn = '1 / -1';
+            itemsContainer.appendChild(noItems);
+          } else {
+            window.__hiddenItems.forEach(item => {
+              const card = document.createElement('div');
+              card.style.backgroundColor = '#222';
+              card.style.borderRadius = '8px';
+              card.style.padding = '15px';
+              card.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+              
+              // Color based on type
+              const borderColor = item.type === 'link' ? '#a5fd0e' : '#ff9500';
+              card.style.borderLeft = `4px solid ${borderColor}`;
+              
+              // Icon based on type
+              const icon = item.type === 'link' ? '🔗' : '🏆';
+              
+              const title = document.createElement('h3');
+              title.innerHTML = `${icon} <a href="${item.url}" target="_blank" style="color: ${borderColor}; text-decoration: none;">${item.title}</a>`;
+              title.style.marginTop = '0';
+              card.appendChild(title);
+              
+              const desc = document.createElement('p');
+              desc.textContent = item.description;
+              desc.style.color = '#ddd';
+              desc.style.fontSize = '14px';
+              card.appendChild(desc);
+              
+              if (item.date) {
+                const date = document.createElement('p');
+                date.textContent = item.date;
+                date.style.color = borderColor;
+                date.style.fontSize = '12px';
+                date.style.marginTop = '10px';
+                card.appendChild(date);
+              }
+              
+              itemsContainer.appendChild(card);
+            });
+          }
+          
+          // Add to DOM
+          document.body.appendChild(overlay);
+        };
+      }
+      
+      // Add this item to the collection if not already there
+      if (!window.__hiddenItems.some(item => item.id === link.id && item.type === 'link')) {
+        window.__hiddenItems.push({
+          id: link.id,
+          title: link.title,
+          url: link.url,
+          description: link.description,
+          type: 'link'
+        });
+      }
+    }
   </script>
 )}
