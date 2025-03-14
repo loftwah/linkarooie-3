@@ -193,104 +193,69 @@ const enablePostHog = isProduction;
       });
     </script>
     
-    <!-- PostHog Analytics - Optimized for Link-in-Bio -->
+    <!-- PostHog Analytics - Optimized and Fixed for Link-in-Bio -->
     <script is:inline define:vars={{ posthogKey, posthogHost, username, enablePostHog }}>
-      // PostHog configuration - minimal implementation
+      // PostHog standard loading snippet
       !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
-      
-      // Enable PostHog for both production and development for testing
+
+      // Enable analytics (adjust this logic as needed)
       const analyticsEnabled = true;
-      
+
       if (analyticsEnabled && typeof window !== 'undefined') {
         try {
-          // Initialize PostHog with minimal configuration focused on link-in-bio use case
+          // Initialize PostHog with minimal, recursion-safe configuration
           posthog.init(posthogKey, {
             api_host: posthogHost,
-            // Disable features that cause recursion issues
-            capture_pageview: false, // We'll do this manually
+            capture_pageview: false,         // Manual page view tracking
+            autocapture: false,              // Disable autocapture to prevent recursion
             session_recording: { enabled: false },
-            // Only capture clicks on links
-            autocapture: {
-              // Only track link clicks (no buttons, forms, etc.)
-              css_selector_limit: 50,
-              capture_links_timeout: 300,
-              element_attribute_limit: 5,
-              dom_event_limit: 100,
-              mask_all_text: true,
-              mask_all_element_attributes: true,
-              // Only capture clicks on link elements
-              url_allowlist: [
-                // Don't add anything here to avoid recursion - we'll handle clicks manually
-              ]
-            },
-            // Reduce other features that might cause issues
             property_blacklist: ['$lib', '$active_feature_flags', '$enabled_feature_flags'],
             disable_session_recording: true,
             disable_feature_flags: true,
             debug: false,
             bootstrap: { distinctID: 'link-bio-user' }
           });
-          
-          // Safe way to manually track the page view
-          setTimeout(() => {
-            try {
-              posthog.capture('pageview', {
-                page: window.location.pathname,
-                profile: username || 'home'
-              });
-            } catch (e) {}
-          }, 1000);
-          
-          // Setup simple link click tracking
+
+          // Initial page view and link click setup
           window.addEventListener('DOMContentLoaded', () => {
-            // Find all links
             setTimeout(() => {
-              try {
-                document.querySelectorAll('a[href]').forEach(link => {
-                  if (!link._hasClickTracking) {
-                    link._hasClickTracking = true;
-                    link.addEventListener('click', () => {
-                      try {
-                        posthog.capture('link_clicked', {
-                          url: link.href,
-                          text: link.innerText || link.textContent || 'Unknown',
-                          profile: username || 'home'
-                        });
-                      } catch (e) {}
+              // Capture initial page view if PostHog is loaded
+              if (posthog.__loaded) {
+                try {
+                  posthog.capture('pageview', {
+                    page: window.location.pathname,
+                    profile: username || 'home'
+                  });
+                } catch (e) {}
+              }
+
+              // Single document-level listener for link clicks
+              document.addEventListener('click', (event) => {
+                if (event.target.tagName === 'A' && event.target.href && posthog.__loaded) {
+                  try {
+                    posthog.capture('link_clicked', {
+                      url: event.target.href,
+                      text: event.target.innerText || event.target.textContent || 'Unknown',
+                      profile: username || 'home'
                     });
-                  }
-                });
-              } catch (e) {}
-            }, 1000);
+                  } catch (e) {}
+                }
+              });
+            }, 1000); // Delay to ensure DOM and PostHog are ready
           });
-          
-          // Capture link clicks during page transitions
+
+          // Handle Astro page transitions
           document.addEventListener('astro:after-swap', () => {
             setTimeout(() => {
-              try {
-                // Capture page view after navigation
-                posthog.capture('pageview', {
-                  page: window.location.pathname,
-                  profile: username || 'home'
-                });
-                
-                // Re-attach link tracking after navigation
-                document.querySelectorAll('a[href]').forEach(link => {
-                  if (!link._hasClickTracking) {
-                    link._hasClickTracking = true;
-                    link.addEventListener('click', () => {
-                      try {
-                        posthog.capture('link_clicked', {
-                          url: link.href,
-                          text: link.innerText || link.textContent || 'Unknown',
-                          profile: username || 'home'
-                        });
-                      } catch (e) {}
-                    });
-                  }
-                });
-              } catch (e) {}
-            }, 1000);
+              if (posthog.__loaded) {
+                try {
+                  posthog.capture('pageview', {
+                    page: window.location.pathname,
+                    profile: username || 'home'
+                  });
+                } catch (e) {}
+              }
+            }, 1000); // Delay to debounce rapid transitions
           });
         } catch (e) {
           console.warn('PostHog setup error:', e);
