@@ -16,23 +16,19 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      POSTHOG_KEY: ${{ secrets.POSTHOG_KEY }}
+      POSTHOG_HOST: ${{ secrets.POSTHOG_HOST }}
+      BASE_URL: ${{ secrets.BASE_URL }}
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v4
       - name: Install, build, and upload your site
         uses: withastro/action@v3
-        with:
-          # The root location of your Astro project inside the repository
-          path: .
-          # Node version
-          node-version: 18
-          # Use Bun as the package manager
-          package-manager: bun@latest
-          # Pass environment variables
-          env:
-            POSTHOG_KEY: ${{ secrets.POSTHOG_KEY }}
-            POSTHOG_HOST: ${{ secrets.POSTHOG_HOST }}
-            BASE_URL: ${{ secrets.BASE_URL }}
+        env:
+          POSTHOG_KEY: ${{ secrets.POSTHOG_KEY }}
+          POSTHOG_HOST: ${{ secrets.POSTHOG_HOST }}
+          BASE_URL: ${{ secrets.BASE_URL }}
 
   deploy:
     needs: build
