@@ -20,7 +20,7 @@ const formattedDate = achievement.showFullDate
     href={achievement.url}
     target="_blank"
     rel="noopener noreferrer"
-    class="block p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 border-l-4 border-green-500"
+    class="block p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 border border-gray-200 dark:border-gray-700 hover:border-[#a5fd0e] border-l-4 border-l-[#a5fd0e]"
     data-track="true"
     data-id={achievement.id}
     data-hidden={isHidden}
@@ -28,13 +28,13 @@ const formattedDate = achievement.showFullDate
     data-description={achievement.description}
   >
     <div class="flex items-start">
-      <div class="mr-3 text-green-500 dark:text-green-400 text-xl">
+      <div class="mr-3 text-[#a5fd0e] text-xl">
         <i class={achievement.icon}></i>
       </div>
       <div>
         <h3 class="font-medium text-gray-900 dark:text-white">{achievement.title}</h3>
         <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{achievement.description}</p>
-        <p class="text-xs text-gray-500 dark:text-gray-500 mt-2">{formattedDate}</p>
+        <p class="text-xs text-[#a5fd0e] mt-2 font-medium">{formattedDate}</p>
       </div>
     </div>
   </a>
@@ -44,7 +44,7 @@ const formattedDate = achievement.showFullDate
   <script define:vars={{ achievement }}>
     console.log(
       '%c🏆 Hidden Achievement Found: ' + achievement.title,
-      'color: #4ade80; font-weight: bold; font-size: 14px;'
+      'color: #a5fd0e; font-weight: bold; font-size: 14px;'
     );
     console.log({
       id: achievement.id,

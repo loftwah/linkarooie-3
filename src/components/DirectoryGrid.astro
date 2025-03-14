@@ -11,9 +11,14 @@ const { profiles } = Astro.props;
 ---
 
 {profiles.length === 0 ? (
-  <div class="text-center py-12">
+  <div class="text-center py-12 bg-gray-200 dark:bg-gray-800 rounded-lg border border-gray-300 dark:border-gray-700 p-8">
     <h2 class="text-2xl font-semibold text-gray-700 dark:text-gray-300">No profiles available</h2>
     <p class="mt-2 text-gray-500 dark:text-gray-400">Check back later for awesome profiles!</p>
+    <div class="mt-4">
+      <span class="inline-block text-[#a5fd0e] text-2xl">
+        <i class="fas fa-users-slash"></i>
+      </span>
+    </div>
   </div>
 ) : (
   <div class="flex justify-center w-full">

@@ -66,25 +66,25 @@ const posthogHost = import.meta.env.POSTHOG_HOST || 'https://us.i.posthog.com';
     
     <ViewTransitions />
   </head>
-  <body class="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
-    <header class="bg-white dark:bg-gray-800 shadow-sm transition-colors duration-200">
+  <body class="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
+    <header class="bg-gray-50 dark:bg-gray-800 shadow-md transition-colors duration-200 border-b border-gray-200 dark:border-gray-700">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
           <div class="flex">
             <div class="flex-shrink-0 flex items-center">
-              <a href="/" class="text-xl font-bold text-blue-600 dark:text-blue-400 flex items-center">
-                <Image src={icon} alt="Linkarooie Icon" width={24} height={24} class="mr-2" />
-                Linkarooie
+              <a href="/" class="text-xl font-bold text-gray-900 dark:text-white flex items-center transition-all duration-300 hover:scale-105">
+                <Image src={icon} alt="Linkarooie Icon" width={28} height={28} class="mr-2" />
+                Link<span class="text-[#a5fd0e]">arooie</span>
               </a>
             </div>
           </div>
           <div class="flex items-center space-x-4">
             <!-- Dark mode toggle -->
-            <button id="theme-toggle" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm p-2 transition-colors duration-200" aria-label="Toggle dark mode">
+            <button id="theme-toggle" class="text-[#a5fd0e] hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm p-2 transition-colors duration-200" aria-label="Toggle dark mode">
               <i id="theme-toggle-dark-icon" class="fas fa-moon hidden"></i>
               <i id="theme-toggle-light-icon" class="fas fa-sun hidden"></i>
             </button>
-            <a href="https://github.com/loftwah/linkarooie" target="_blank" rel="noopener" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200">
+            <a href="https://github.com/loftwah/linkarooie-3" target="_blank" rel="noopener" class="text-[#a5fd0e] hover:text-[#84ca0b] dark:hover:text-[#c7ff5a] transition-colors duration-200">
               <span class="sr-only">GitHub</span>
               <i class="fab fa-github text-lg"></i>
             </a>
@@ -97,7 +97,7 @@ const posthogHost = import.meta.env.POSTHOG_HOST || 'https://us.i.posthog.com';
       <slot />
     </main>
     
-    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-6 transition-colors duration-200">
+    <footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-6 transition-colors duration-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col md:flex-row justify-between items-center">
           <div class="mb-4 md:mb-0">
@@ -107,7 +107,7 @@ const posthogHost = import.meta.env.POSTHOG_HOST || 'https://us.i.posthog.com';
           </div>
           <div>
             <p class="text-gray-500 dark:text-gray-400">
-              Made with 💙 by <a href="https://github.com/loftwah" class="text-blue-600 dark:text-blue-400 hover:underline">Loftwah</a>
+              Made with <span class="text-[#a5fd0e]">💚</span> by <a href="https://github.com/loftwah" class="text-[#a5fd0e] hover:text-[#84ca0b] dark:hover:text-[#c7ff5a] hover:underline">Loftwah</a>
             </p>
           </div>
         </div>
