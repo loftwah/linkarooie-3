@@ -69,7 +69,7 @@ const ogImage = profile.ogImageUrl;
               href={social.url} 
               target="_blank" 
               rel="noopener noreferrer"
-              class="text-gray-600 hover:text-[#a5fd0e] dark:text-gray-400 dark:hover:text-[#a5fd0e]"
+              class="text-gray-600 hover:text-primary-light dark:text-gray-400 dark:hover:text-primary-dark transition-all duration-200 hover:scale-110"
               data-track="true"
               data-id={`social-${social.platform}`}
               data-type="social"
@@ -85,7 +85,7 @@ const ogImage = profile.ogImageUrl;
       {profile.tags.length > 0 && (
         <div class="flex flex-wrap justify-center gap-2 mt-6">
           {profile.tags.map(tag => (
-            <span class="px-3 py-1 bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-[#a5fd0e] rounded-full text-sm border border-[#a5fd0e]">
+            <span class="px-3 py-1 bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-primary-dark rounded-full text-sm border border-primary-light dark:border-primary-dark">
               {tag}
             </span>
           ))}
