@@ -55,8 +55,8 @@ const isHidden = link.hidden || false;
             keySequence = keySequence.substring(keySequence.length - cheatCode.length);
           }
           
-          // Check if the sequence matches the cheat code
-          if (keySequence === cheatCode) {
+          // Check if the sequence matches the cheat code AND we're on the loftwah profile
+          if (keySequence === cheatCode && isLoftwahProfile()) {
             // Clear the sequence to prevent multiple triggers
             keySequence = '';
             
@@ -65,8 +65,31 @@ const isHidden = link.hidden || false;
           }
         });
         
+        // Function to check if we're on the loftwah profile
+        function isLoftwahProfile() {
+          // Check if URL contains 'loftwah'
+          const isLoftwahUrl = window.location.pathname.toLowerCase().includes('loftwah');
+          
+          // Check if page has elements that indicate we're on the loftwah profile
+          // For example, look for a heading or profile element with 'loftwah' text
+          const profileElements = document.querySelectorAll('h1, h2, h3, .profile-name, [data-username]');
+          let hasLoftwahElement = false;
+          
+          profileElements.forEach(element => {
+            if (element.textContent.toLowerCase().includes('loftwah') || 
+                (element.getAttribute('data-username') || '').toLowerCase() === 'loftwah') {
+              hasLoftwahElement = true;
+            }
+          });
+          
+          return isLoftwahUrl || hasLoftwahElement;
+        }
+        
         // Function to display the hidden items overlay
         window.showHiddenItemsOverlay = function() {
+          // Only show the overlay if we're on the loftwah profile
+          if (!isLoftwahProfile()) return;
+          
           // Check if overlay already exists
           if (document.getElementById('hidden-items-overlay')) {
             return;
