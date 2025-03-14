@@ -1,0 +1,16 @@
+{
+  "name": "linkarooie",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "astro": "^5.5.2",
+    "posthog-js": "^1.230.4"
+  }
+}
