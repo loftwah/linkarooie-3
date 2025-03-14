@@ -15,15 +15,15 @@ const isHidden = link.hidden || false;
     href={link.url}
     target="_blank"
     rel="noopener noreferrer"
-    class="block p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 border border-gray-200 dark:border-gray-700 hover:border-[#a5fd0e]"
+    class="block p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 border border-gray-200 dark:border-gray-700 hover:border-[#a5fd0e] text-center"
     data-track="true"
     data-id={link.id}
     data-hidden={isHidden}
     data-type="link"
     data-description={link.description}
   >
-    <div class="flex items-start">
-      <div class="mr-3 text-[#a5fd0e] text-xl">
+    <div class="flex flex-col items-center justify-center">
+      <div class="mb-2 text-[#a5fd0e] text-2xl">
         <i class={link.icon}></i>
       </div>
       <div>

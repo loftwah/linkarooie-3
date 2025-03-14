@@ -69,7 +69,7 @@ const ogImage = profile.ogImageUrl;
               href={social.url} 
               target="_blank" 
               rel="noopener noreferrer"
-              class="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300"
+              class="text-gray-600 hover:text-[#a5fd0e] dark:text-gray-400 dark:hover:text-[#a5fd0e]"
               data-track="true"
               data-id={`social-${social.platform}`}
               data-type="social"
@@ -85,7 +85,7 @@ const ogImage = profile.ogImageUrl;
       {profile.tags.length > 0 && (
         <div class="flex flex-wrap justify-center gap-2 mt-6">
           {profile.tags.map(tag => (
-            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">
+            <span class="px-3 py-1 bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-[#a5fd0e] rounded-full text-sm border border-[#a5fd0e]">
               {tag}
             </span>
           ))}
@@ -94,9 +94,9 @@ const ogImage = profile.ogImageUrl;
     
     <!-- Links Section -->
     <section class="mt-12 px-4">
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Links</h2>
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Links</h2>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 gap-4 max-w-2xl mx-auto">
         {profile.links.filter(link => !link.hidden).map(link => (
           <LinkCard link={link} />
         ))}
@@ -109,9 +109,9 @@ const ogImage = profile.ogImageUrl;
     
     <!-- Achievements Section -->
     <section class="mt-12 px-4">
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Achievements</h2>
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Achievements</h2>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 gap-4 max-w-2xl mx-auto">
         {profile.achievements.filter(achievement => !achievement.hidden).map(achievement => (
           <AchievementCard achievement={achievement} />
         ))}
