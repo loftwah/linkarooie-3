@@ -27,15 +27,13 @@ const formattedDate = achievement.showFullDate
     data-type="achievement"
     data-description={achievement.description}
   >
-    <div class="flex flex-col items-center justify-center">
-      <div class="mb-2 text-[#a5fd0e] text-2xl">
-        <i class={achievement.icon}></i>
-      </div>
-      <div>
-        <h3 class="font-medium text-gray-900 dark:text-white">{achievement.title}</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{achievement.description}</p>
-        <p class="text-xs text-[#a5fd0e] mt-2 font-medium">{formattedDate}</p>
-      </div>
+    <div class="flex flex-col items-center">
+      <h3 class="font-medium text-gray-900 dark:text-white flex items-center">
+        <i class={`${achievement.icon} text-[#a5fd0e] text-xl mr-2`}></i>
+        {achievement.title}
+      </h3>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{achievement.description}</p>
+      <p class="text-xs text-[#a5fd0e] mt-2 font-medium">{formattedDate}</p>
     </div>
   </a>
 )}
