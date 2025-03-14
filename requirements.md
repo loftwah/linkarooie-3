@@ -241,6 +241,7 @@ This is the web snippet from the site:
 
 https://posthog.com/docs/libraries/astro
 https://docs.astro.build/en/guides/deploy/github/
+https://tailwindcss.com/docs/dark-mode
 
 Using posthog with astro
 
