@@ -193,88 +193,109 @@ const enablePostHog = isProduction;
       });
     </script>
     
-    <!-- PostHog Analytics - Simplified Tracking -->
+    <!-- PostHog Analytics - Optimized for Link-in-Bio -->
     <script is:inline define:vars={{ posthogKey, posthogHost, username, enablePostHog }}>
-      // PostHog configuration
+      // PostHog configuration - minimal implementation
       !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
       
-      // PostHog initialization - only once
-      let posthogInitialized = false;
+      // Enable PostHog for both production and development for testing
+      const analyticsEnabled = true;
       
-      function initPosthog() {
-        // Skip if already initialized or not enabled
-        if (posthogInitialized || !enablePostHog) return;
-        
+      if (analyticsEnabled && typeof window !== 'undefined') {
         try {
-          // Initialize PostHog with minimal configuration
+          // Initialize PostHog with minimal configuration focused on link-in-bio use case
           posthog.init(posthogKey, {
             api_host: posthogHost,
-            capture_pageview: true,
-            capture_pageleave: false,
-            session_recording: {
-              enabled: false
-            },
+            // Disable features that cause recursion issues
+            capture_pageview: false, // We'll do this manually
+            session_recording: { enabled: false },
+            // Only capture clicks on links
             autocapture: {
-              // Only capture important interactions
-              element_attrs_include: ['data-track'],
-              dom_event_limit: 300, // Limit events captured per session
-              sampling: 0.5, // Only sample 50% of events
+              // Only track link clicks (no buttons, forms, etc.)
+              css_selector_limit: 50,
+              capture_links_timeout: 300,
+              element_attribute_limit: 5,
+              dom_event_limit: 100,
+              mask_all_text: true,
+              mask_all_element_attributes: true,
+              // Only capture clicks on link elements
+              url_allowlist: [
+                // Don't add anything here to avoid recursion - we'll handle clicks manually
+              ]
             },
-            disable_persistence: false,
+            // Reduce other features that might cause issues
+            property_blacklist: ['$lib', '$active_feature_flags', '$enabled_feature_flags'],
             disable_session_recording: true,
-            loaded: function(posthog) {
-              // Set additional properties only once after loading
-              posthog.register({
-                app_version: '1.0.0',
+            disable_feature_flags: true,
+            debug: false,
+            bootstrap: { distinctID: 'link-bio-user' }
+          });
+          
+          // Safe way to manually track the page view
+          setTimeout(() => {
+            try {
+              posthog.capture('pageview', {
+                page: window.location.pathname,
                 profile: username || 'home'
               });
-            }
+            } catch (e) {}
+          }, 1000);
+          
+          // Setup simple link click tracking
+          window.addEventListener('DOMContentLoaded', () => {
+            // Find all links
+            setTimeout(() => {
+              try {
+                document.querySelectorAll('a[href]').forEach(link => {
+                  if (!link._hasClickTracking) {
+                    link._hasClickTracking = true;
+                    link.addEventListener('click', () => {
+                      try {
+                        posthog.capture('link_clicked', {
+                          url: link.href,
+                          text: link.innerText || link.textContent || 'Unknown',
+                          profile: username || 'home'
+                        });
+                      } catch (e) {}
+                    });
+                  }
+                });
+              } catch (e) {}
+            }, 1000);
           });
           
-          // Simple pageview tracking with basic data
-          posthog.capture('page_view', {
-            path: window.location.pathname,
-            title: document.title
+          // Capture link clicks during page transitions
+          document.addEventListener('astro:after-swap', () => {
+            setTimeout(() => {
+              try {
+                // Capture page view after navigation
+                posthog.capture('pageview', {
+                  page: window.location.pathname,
+                  profile: username || 'home'
+                });
+                
+                // Re-attach link tracking after navigation
+                document.querySelectorAll('a[href]').forEach(link => {
+                  if (!link._hasClickTracking) {
+                    link._hasClickTracking = true;
+                    link.addEventListener('click', () => {
+                      try {
+                        posthog.capture('link_clicked', {
+                          url: link.href,
+                          text: link.innerText || link.textContent || 'Unknown',
+                          profile: username || 'home'
+                        });
+                      } catch (e) {}
+                    });
+                  }
+                });
+              } catch (e) {}
+            }, 1000);
           });
-          
-          posthogInitialized = true;
         } catch (e) {
-          console.warn('PostHog initialization failed:', e);
-          // Prevent further attempts if there was an error
-          posthogInitialized = true;
+          console.warn('PostHog setup error:', e);
         }
       }
-      
-      // Initialize PostHog on page load (with error handling)
-      if (typeof document !== 'undefined') {
-        try {
-          if (document.readyState === 'complete') {
-            initPosthog();
-          } else {
-            document.addEventListener('DOMContentLoaded', initPosthog);
-          }
-        } catch (e) {
-          console.warn('PostHog setup failed:', e);
-        }
-      }
-      
-      // Handle page transitions safely
-      document.addEventListener('astro:after-swap', () => {
-        try {
-          // Only capture pageview on navigation, don't reinitialize
-          if (posthogInitialized && enablePostHog) {
-            posthog.capture('page_view', {
-              path: window.location.pathname,
-              title: document.title
-            });
-          } else {
-            // Initialize if not done yet
-            initPosthog();
-          }
-        } catch (e) {
-          console.warn('PostHog page transition handling failed:', e);
-        }
-      });
     </script>
   </body>
 </html>
