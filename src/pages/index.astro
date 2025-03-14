@@ -2,19 +2,116 @@
 import Layout from '../layouts/Layout.astro';
 import DirectoryGrid from '../components/DirectoryGrid.astro';
 import { getDirectoryProfiles } from '../data';
+import { Image } from 'astro:assets';
+import backgroundImage from '../assets/background.svg';
+import ogImage from '../assets/images/linkarooie_og.jpg';
 
 const directoryProfiles = getDirectoryProfiles();
 ---
 
-<Layout title="Linkarooie - Connect with awesome people">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <header class="text-center mb-12">
-      <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Linkarooie</h1>
-      <p class="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-        A Linktree-style application that displays user profiles with links and achievements.
-      </p>
-    </header>
+<Layout title="Linkarooie - Simplify your online presence" ogImage={ogImage}>
+  <!-- Hero Section -->
+  <div class="relative overflow-hidden bg-white dark:bg-gray-900">
+    <div class="absolute inset-0 z-0 opacity-10">
+      <Image 
+        src={backgroundImage} 
+        alt="Background pattern" 
+        class="w-full h-full object-cover"
+      />
+    </div>
     
-    <DirectoryGrid profiles={directoryProfiles} />
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="text-center">
+        <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+          <span class="block">Linkarooie</span>
+        </h1>
+        <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-600 dark:text-gray-300">
+          A Linktree-style app to showcase your profile, links, and achievements
+        </p>
+        <div class="mt-6 flex justify-center gap-4">
+          <a href="https://github.com/loftwah/linkarooie-3" class="inline-flex items-center px-5 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200">
+            <i class="fab fa-github mr-2"></i> Fork on GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Featured Profiles Section -->
+  <div class="py-10 bg-gray-50 dark:bg-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Featured Profiles</h2>
+        <p class="mt-2 text-lg text-gray-600 dark:text-gray-300">
+          Browse example profiles from our community
+        </p>
+      </div>
+      
+      <DirectoryGrid profiles={directoryProfiles} />
+    </div>
+  </div>
+  
+  <!-- About Linkarooie Section -->
+  <div class="py-10 bg-white dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">About Linkarooie</h2>
+        <p class="mt-2 max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-300">
+          An open-source alternative to Linktree with a few key features
+        </p>
+      </div>
+      
+      <div class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <!-- Feature 1 -->
+        <div class="bg-white dark:bg-gray-700 rounded-lg shadow-sm p-5">
+          <div class="text-blue-600 dark:text-blue-400 mb-3">
+            <i class="fas fa-link text-xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Links Management</h3>
+          <p class="text-gray-600 dark:text-gray-300">
+            Showcase your important links with custom icons and descriptions
+          </p>
+        </div>
+        
+        <!-- Feature 2 -->
+        <div class="bg-white dark:bg-gray-700 rounded-lg shadow-sm p-5">
+          <div class="text-blue-600 dark:text-blue-400 mb-3">
+            <i class="fas fa-trophy text-xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Achievements</h3>
+          <p class="text-gray-600 dark:text-gray-300">
+            Display your certifications, milestones, and accomplishments with dates
+          </p>
+        </div>
+        
+        <!-- Feature 3 -->
+        <div class="bg-white dark:bg-gray-700 rounded-lg shadow-sm p-5">
+          <div class="text-blue-600 dark:text-blue-400 mb-3">
+            <i class="fas fa-moon text-xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Dark Mode</h3>
+          <p class="text-gray-600 dark:text-gray-300">
+            Toggle between light and dark themes with a persistent preference
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Get Started Section -->
+  <div class="py-10 bg-gray-50 dark:bg-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Get Your Own Linkarooie</h2>
+        <p class="mt-2 max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-300">
+          Fork the project on GitHub to create your own profile page
+        </p>
+        <div class="mt-6 flex justify-center gap-4">
+          <a href="https://github.com/loftwah/linkarooie-3" class="inline-flex items-center px-5 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200">
+            <i class="fab fa-github mr-2"></i> GitHub Repository
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </Layout>
