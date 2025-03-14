@@ -109,7 +109,9 @@ const ogImage = profile.ogImageUrl;
     
     <!-- Achievements Section -->
     <section class="mt-12 px-4">
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Achievements</h2>
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+        <i class="fas fa-trophy text-[#ff9500] dark:text-[#ff9500] mr-2"></i>Achievements
+      </h2>
       
       <div class="grid grid-cols-1 gap-4 max-w-2xl mx-auto">
         {profile.achievements.filter(achievement => !achievement.hidden).map(achievement => (
