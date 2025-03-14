@@ -1,7 +1,7 @@
 import { Profile } from '../../types';
 import avatarImage from '../../assets/images/loftwah_avatar.jpg';
 import bannerImage from '../../assets/images/loftwah_banner.jpg';
-import ogImage from '../../assets/images/linkarooie_og.jpg';
+import ogImage from '../../assets/images/loftwah_og.jpg';
 
 export const loftwah: Profile = {
   name: "Dean Lofts",
