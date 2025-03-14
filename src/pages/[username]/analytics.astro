@@ -1,10 +1,22 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getProfileByUsername } from '../../data';
+import { getProfileByUsername, getPublicProfiles } from '../../data';
+
+// Add the getStaticPaths function to match the one in [username].astro
+export async function getStaticPaths() {
+  const profiles = getPublicProfiles();
+  
+  return profiles.map(profile => ({
+    params: { username: profile.username },
+    props: { profile }
+  }));
+}
 
 const { username } = Astro.params;
-const profile = getProfileByUsername(username);
+const { profile } = Astro.props;
 
+// This check is no longer needed since getStaticPaths will ensure 
+// we only build pages for valid profiles, but keeping it for safety
 if (!profile) {
   return Astro.redirect('/404');
 }
