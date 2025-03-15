@@ -26,8 +26,6 @@ jobs:
       - name: Install, build, and upload your site
         uses: withastro/action@v3
         env:
-          POSTHOG_KEY: ${{ secrets.POSTHOG_KEY }}
-          POSTHOG_HOST: ${{ secrets.POSTHOG_HOST }}
           BASE_URL: ${{ secrets.BASE_URL }}
 
   deploy:

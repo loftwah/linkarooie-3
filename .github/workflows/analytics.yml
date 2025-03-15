@@ -1,0 +1,68 @@
+name: Cloudflare Analytics Report
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Runs daily at midnight UTC
+  workflow_dispatch: # Allows manual triggering
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-analytics:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install jq (for JSON parsing)
+        run: sudo apt-get install -y jq
+
+      - name: Fetch Cloudflare Analytics Data
+        run: |
+          RESPONSE=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/${{ secrets.ZONE_ID }}/analytics/dashboard" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_KEY }}" \
+            -H "Content-Type: application/json")
+
+          if echo "$RESPONSE" | jq -e .success > /dev/null; then
+            echo "$RESPONSE" | jq .result > src/data/analytics.json
+          else
+            echo "Cloudflare API request failed"
+            exit 1
+          fi
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          if [[ -n $(git status --porcelain) ]]; then
+            git add src/data/analytics.json
+            git commit -m "Update Cloudflare analytics report [$(date -u)]"
+            git push
+          else
+            echo "No changes to commit"
+          fi
+
+      - name: Send Email Report via Resend API
+        run: |
+          REPORT=$(jq -r '.totals | {requests, cachedRequests, uncachedRequests, threats, bandwidth, uniqueVisitors}' src/data/analytics.json)
+
+          JSON_PAYLOAD=$(jq -n --arg from "${{ secrets.FROM_EMAIL }}" \
+                              --arg to "${{ secrets.TO_EMAIL }}" \
+                              --arg subject "Cloudflare Analytics Report - $(date -u)" \
+                              --arg text "Cloudflare Web Analytics Report:\n\n$REPORT" \
+                              '{from: $from, to: [$to], subject: $subject, text: $text}')
+
+          curl -X POST "https://api.resend.com/emails" \
+            -H "Authorization: Bearer ${{ secrets.RESEND_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d "$JSON_PAYLOAD"
+
+    env:
+      ZONE_ID: ${{ secrets.ZONE_ID }}
+      API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+      FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
+      TO_EMAIL: ${{ secrets.TO_EMAIL }}
+      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
