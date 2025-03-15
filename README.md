@@ -56,7 +56,33 @@ bun install
 3. **Update the index**:
    - Edit `src/data/index.ts` to import and export your profile
 
-### 5. Local Development
+### 5. Generate OG Images
+
+Linkarooie includes scripts to generate custom Open Graph images for your site and profiles:
+
+1. **Generate main site OG image**:
+
+```bash
+# Default dark theme
+bun run scripts/generate-main-og-image.ts
+
+# Light theme
+bun run scripts/generate-main-og-image.ts --theme=light
+```
+
+2. **Generate profile OG image**:
+
+```bash
+# Default dark theme
+bun run scripts/generate-og-image.ts
+
+# Light theme
+bun run scripts/generate-og-image.ts --theme=light
+```
+
+These scripts create professional social sharing images with your profile details and the Linkarooie branding.
+
+### 6. Local Development
 
 Start the development server:
 
@@ -68,7 +94,7 @@ bun dev
 
 Visit `http://localhost:4321` to see your site in action.
 
-### 6. Deploy to GitHub Pages
+### 7. Deploy to GitHub Pages
 
 #### Set Up GitHub Pages
 
@@ -110,9 +136,13 @@ Want to use your own domain like I did with `linkarooie.com`? No worries, here's
 
 1. **Buy a domain** from a decent registrar like Namecheap
 
-2. **Configure DNS records** at your domain registrar:
+2. **Set up Cloudflare for DNS**:
 
-   - Add a `CNAME` record pointing to `yourusername.github.io`
+   - Create a free Cloudflare account
+   - Add your domain to Cloudflare
+   - Update your domain registrar to use Cloudflare nameservers
+   - In Cloudflare, add a `CNAME` record pointing to `yourusername.github.io`
+   - Set the proxy status to "Proxied" for free SSL and performance benefits
 
 3. **Set up in GitHub repo**:
 
@@ -135,6 +165,15 @@ Want to use your own domain like I did with `linkarooie.com`? No worries, here's
 
 Edit `tailwind.config.js` to change the primary and accent colors.
 
+### Customizing OG Images
+
+Both OG image generation scripts support dark and light themes:
+
+- Dark theme uses a green accent (#a5fd0e)
+- Light theme uses a purple accent (#9233ea)
+
+You can modify these colors in the respective scripts.
+
 ### Adding New Features
 
 The codebase is pretty straightforward. Have a geez at:
@@ -143,6 +182,7 @@ The codebase is pretty straightforward. Have a geez at:
 - `src/layouts/` for page layouts
 - `src/pages/` for the main routes
 - `src/types/` for TypeScript interfaces
+- `scripts/` for utility scripts including OG image generation
 
 ## 🤝 Contributing
 

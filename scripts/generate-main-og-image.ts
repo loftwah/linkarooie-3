@@ -11,6 +11,29 @@ const subtitle = 'Simplify your online presence';
 const description = 'A Linktree-style app to showcase your profile, links, and achievements';
 const url = 'linkarooie.com';
 
+// Interface for theme options
+interface ThemeOptions {
+  theme: 'dark' | 'light';
+}
+
+// Theme color configurations
+const themeColors = {
+  dark: {
+    accent: '#a5fd0e',
+    text: 'white',
+    secondaryText: '#e0e0e0',
+    overlayColor: 'rgba(0, 0, 0, 0.6)',
+    textShadow: 'rgba(0, 0, 0, 0.5)'
+  },
+  light: {
+    accent: '#9233ea', // Purple accent color
+    text: '#333333',
+    secondaryText: '#555555',
+    overlayColor: 'rgba(255, 255, 255, 0.85)',
+    textShadow: 'rgba(0, 0, 0, 0.2)'
+  }
+};
+
 // Load fonts using Bun
 async function loadFont(name: string, weight: number, path: string) {
   const fontFile = Bun.file(path);
@@ -22,7 +45,10 @@ async function loadFont(name: string, weight: number, path: string) {
 }
 
 // Generate the OG image
-async function generateOGImage() {
+async function generateOGImage(options: ThemeOptions = { theme: 'dark' }) {
+  const isDark = options.theme === 'dark';
+  const colors = themeColors[options.theme];
+  
   // Load the background image and convert to data URL
   const imageFile = Bun.file(linkarooieImagePath);
   if (!(await imageFile.exists())) {
@@ -65,6 +91,7 @@ async function generateOGImage() {
                 width: '100%',
                 height: '100%',
                 objectFit: 'cover',
+                filter: isDark ? 'none' : 'brightness(0.9)', // Slightly dim in light mode for better contrast
               },
             },
           },
@@ -79,8 +106,8 @@ async function generateOGImage() {
                 alignItems: 'center',
                 width: '100%',
                 height: '100%',
-                backgroundColor: 'rgba(0, 0, 0, 0.6)', // Darker overlay for contrast
-                padding: '60px', // More padding for breathing room
+                backgroundColor: colors.overlayColor,
+                padding: '60px',
                 position: 'relative',
                 zIndex: 1,
               },
@@ -90,10 +117,10 @@ async function generateOGImage() {
                   type: 'h1',
                   props: {
                     style: {
-                      fontSize: '80px', // Bigger for impact
+                      fontSize: '80px',
                       fontWeight: 700,
-                      color: '#a5fd0e', // Green accent
-                      textShadow: '0 4px 8px rgba(0, 0, 0, 0.5)', // Softer shadow
+                      color: colors.accent,
+                      textShadow: `0 4px 8px ${colors.textShadow}`,
                       margin: '0',
                     },
                     children: title,
@@ -104,11 +131,11 @@ async function generateOGImage() {
                   type: 'p',
                   props: {
                     style: {
-                      fontSize: '40px', // Larger for hierarchy
-                      fontWeight: 600, // Bolder for emphasis
-                      color: 'white',
-                      textShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
-                      margin: '20px 0 0 0', // More spacing
+                      fontSize: '40px',
+                      fontWeight: 600,
+                      color: colors.text,
+                      textShadow: `0 2px 4px ${colors.textShadow}`,
+                      margin: '20px 0 0 0',
                     },
                     children: subtitle,
                   },
@@ -118,13 +145,13 @@ async function generateOGImage() {
                   type: 'p',
                   props: {
                     style: {
-                      fontSize: '28px', // Improved readability
+                      fontSize: '28px',
                       fontWeight: 400,
-                      color: '#e0e0e0', // Softer white
-                      textShadow: '0 1px 2px rgba(0, 0, 0, 0.5)',
+                      color: colors.secondaryText,
+                      textShadow: `0 1px 2px ${colors.textShadow}`,
                       margin: '30px 0 0 0',
                       textAlign: 'center',
-                      maxWidth: '800px', // Constrain width for readability
+                      maxWidth: '800px',
                     },
                     children: description,
                   },
@@ -134,11 +161,11 @@ async function generateOGImage() {
                   type: 'p',
                   props: {
                     style: {
-                      fontSize: '32px', // More prominent
+                      fontSize: '32px',
                       fontWeight: 700,
-                      color: '#a5fd0e', // Green accent
-                      textShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
-                      margin: '40px 0 0 0', // Extra spacing
+                      color: colors.accent,
+                      textShadow: `0 2px 4px ${colors.textShadow}`,
+                      margin: '40px 0 0 0',
                     },
                     children: url,
                   },
@@ -170,9 +197,16 @@ async function generateOGImage() {
 // Main execution
 async function main() {
   try {
-    console.log('Generating OG image...');
-    const imageBuffer = await generateOGImage();
-    console.log(`Saving OG image to ${outputPath}`);
+    // Parse command line arguments
+    const args = process.argv.slice(2);
+    const themeArg = args.find(arg => arg.startsWith('--theme='));
+    const theme = themeArg ? (themeArg.split('=')[1] as 'dark' | 'light') : 'dark';
+    
+    // Generate OG image with the specified theme
+    console.log(`Generating ${theme} OG image...`);
+    const imageBuffer = await generateOGImage({ theme });
+    
+    // Always write to the same output path
     await writeFile(outputPath, imageBuffer);
     console.log(`OG image saved to ${outputPath}`);
   } catch (error) {
