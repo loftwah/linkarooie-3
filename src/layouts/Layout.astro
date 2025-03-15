@@ -6,7 +6,6 @@ import { ViewTransitions } from 'astro:transitions';
 import { Image } from 'astro:assets';
 import defaultOgImage from '../assets/images/linkarooie_og.jpg';
 import icon from '../assets/images/icon.png';
-import PostHog from '../components/PostHog.astro';
 
 interface Props {
   title: string;
@@ -45,9 +44,6 @@ const ogImageUrl = typeof ogImage === 'string' ? ogImage : ogImage.src;
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="twitter:card" content="summary_large_image" />
-    
-    <!-- PostHog Analytics -->
-    <PostHog username={username} />
     
     <!-- Dark mode script - Must be inline and run before any rendering -->
     <script is:inline>
