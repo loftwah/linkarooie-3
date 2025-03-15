@@ -16,7 +16,39 @@ async function loadFont(name, weight, path) {
 }
 
 // Generate the OG image
-async function generateOGImage(profile) {
+async function generateOGImage(profile, options = {}) {
+  // Default theme settings
+  const theme = options.theme || 'dark';
+  const isDarkTheme = theme === 'dark';
+  
+  // Theme colors
+  const colors = {
+    dark: {
+      background: '#1b1d2d',
+      text: 'white',
+      accent: '#a5fd0e',
+      secondaryText: '#bdc3c7',
+      headerText: '#e0e0e0',
+      tagBackground: '#2a3b0f',
+      tagText: '#a5fd0e',
+      gradientStart: 'rgba(165, 253, 14, 0.15)',
+      gradientEnd: 'rgba(27, 29, 45, 0)'
+    },
+    light: {
+      background: '#ffffff',
+      text: '#333333',
+      accent: '#9233ea',
+      secondaryText: '#555555',
+      headerText: '#444444',
+      tagBackground: '#f0e6fa',
+      tagText: '#9233ea',
+      gradientStart: 'rgba(146, 51, 234, 0.15)',
+      gradientEnd: 'rgba(255, 255, 255, 0)'
+    }
+  };
+  
+  // Set current theme colors
+  const currentTheme = colors[isDarkTheme ? 'dark' : 'light'];
   // Load avatar and convert to data URL
   const imageFile = Bun.file(profile.avatarUrl);
   if (!(await imageFile.exists())) {
@@ -54,8 +86,8 @@ async function generateOGImage(profile) {
           display: 'flex',
           width: '100%',
           height: '100%',
-          backgroundColor: '#1b1d2d',
-          color: 'white',
+          backgroundColor: currentTheme.background,
+          color: currentTheme.text,
           fontFamily: 'Inter',
         },
         children: [
@@ -93,7 +125,7 @@ async function generateOGImage(profile) {
                             borderRadius: '90px',
                             overflow: 'hidden',
                             boxShadow: '0 8px 20px rgba(0, 0, 0, 0.4)',
-                            border: '4px solid #a5fd0e',
+                            border: `4px solid ${currentTheme.accent}`,
                           },
                           children: [
                             {
@@ -133,7 +165,7 @@ async function generateOGImage(profile) {
                                   fontSize: '32px',
                                   fontWeight: 400,
                                   margin: 0,
-                                  color: '#a5fd0e',
+                                  color: currentTheme.accent,
                                 },
                                 children: `@${profile.username}`,
                               },
@@ -146,7 +178,7 @@ async function generateOGImage(profile) {
                                   fontSize: '24px',
                                   fontWeight: 500,
                                   margin: 0,
-                                  color: '#e0e0e0',
+                                  color: currentTheme.headerText,
                                 },
                                 children: profile.description,
                               },
@@ -165,7 +197,7 @@ async function generateOGImage(profile) {
                       display: 'flex',
                       fontSize: '22px',
                       lineHeight: 1.6,
-                      color: '#bdc3c7',
+                      color: currentTheme.secondaryText,
                       maxWidth: '800px',
                       margin: '20px 0 0 0',
                     },
@@ -198,8 +230,8 @@ async function generateOGImage(profile) {
                             props: {
                               style: {
                                 display: 'flex',
-                                backgroundColor: '#2a3b0f',
-                                color: '#a5fd0e',
+                                backgroundColor: currentTheme.tagBackground,
+                                color: currentTheme.tagText,
                                 padding: '10px 20px',
                                 borderRadius: '30px',
                                 fontSize: '18px',
@@ -231,7 +263,7 @@ async function generateOGImage(profile) {
                           style: {
                             display: 'flex',
                             fontSize: '20px',
-                            color: '#a5fd0e',
+                            color: currentTheme.accent,
                             fontWeight: 700,
                           },
                           children: 'linkarooie.com',
@@ -253,7 +285,7 @@ async function generateOGImage(profile) {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                background: 'linear-gradient(135deg, rgba(165, 253, 14, 0.15) 0%, rgba(27, 29, 45, 0) 60%)',
+                background: `linear-gradient(135deg, ${currentTheme.gradientStart} 0%, ${currentTheme.gradientEnd} 60%)`,
                 pointerEvents: 'none',
               },
             },
@@ -266,7 +298,7 @@ async function generateOGImage(profile) {
 
   // Convert SVG to PNG
   const resvg = new Resvg(svg, {
-    background: 'rgba(27, 29, 45, 1)',
+    background: isDarkTheme ? 'rgba(27, 29, 45, 1)' : 'rgba(255, 255, 255, 1)',
     fitTo: { mode: 'width', value: 1200 },
   });
   return Buffer.from(resvg.render().asPng());
@@ -277,7 +309,14 @@ async function main() {
   try {
     console.log('Generating OG image...');
     const profile = loftwah; // Use the imported profile directly
-    const imageBuffer = await generateOGImage(profile);
+    
+    // Check if theme parameter was passed via command line
+    const args = process.argv.slice(2);
+    const themeArg = args.find(arg => arg.startsWith('--theme='));
+    const theme = themeArg ? themeArg.split('=')[1] : 'dark';
+    
+    console.log(`Generating OG image with ${theme} theme...`);
+    const imageBuffer = await generateOGImage(profile, { theme });
 
     const outputDir = dirname(profile.ogImageUrl);
     if (!existsSync(outputDir)) await mkdir(outputDir, { recursive: true });
