@@ -42,6 +42,9 @@ async function generateOGImage(profile) {
   const fonts = [interRegular, interBold];
   console.log('Fonts loaded successfully');
 
+  // Take up to 16 tags instead of 8 to display in two rows if available
+  const tagsToDisplay = profile.tags.slice(0, 16);
+  
   // Generate SVG with Satori
   const svg = await satori(
     {
@@ -169,31 +172,46 @@ async function generateOGImage(profile) {
                     children: profile.bio,
                   },
                 },
-                // Tags
+                // Tags container
                 {
                   type: 'div',
                   props: {
                     style: {
                       display: 'flex',
-                      flexWrap: 'wrap',
+                      flexDirection: 'column',
                       gap: '12px',
                       marginTop: '30px',
                     },
-                    children: profile.tags.slice(0, 8).map((tag) => ({
-                      type: 'div',
-                      props: {
-                        style: {
-                          display: 'flex',
-                          backgroundColor: '#2a3b0f',
-                          color: '#a5fd0e',
-                          padding: '10px 20px',
-                          borderRadius: '30px',
-                          fontSize: '18px',
-                          fontWeight: 500,
+                    children: [
+                      // Tags are now organized to better fit the available space
+                      {
+                        type: 'div',
+                        props: {
+                          style: {
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            gap: '12px',
+                            width: '100%',
+                          },
+                          children: tagsToDisplay.map((tag) => ({
+                            type: 'div',
+                            props: {
+                              style: {
+                                display: 'flex',
+                                backgroundColor: '#2a3b0f',
+                                color: '#a5fd0e',
+                                padding: '10px 20px',
+                                borderRadius: '30px',
+                                fontSize: '18px',
+                                fontWeight: 500,
+                                marginBottom: '6px',
+                              },
+                              children: tag,
+                            },
+                          })),
                         },
-                        children: tag,
                       },
-                    })),
+                    ],
                   },
                 },
                 // Footer
