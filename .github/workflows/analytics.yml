@@ -21,16 +21,28 @@ jobs:
 
       - name: Fetch Cloudflare Analytics Data
         run: |
-          RESPONSE=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/${{ secrets.ZONE_ID }}/analytics/dashboard" \
-            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_KEY }}" \
+          # Add date parameters (last 30 days)
+          TODAY=$(date -u +"%Y-%m-%d")
+          THIRTY_DAYS_AGO=$(date -u -d "30 days ago" +"%Y-%m-%d")
+          
+          RESPONSE=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/analytics/dashboard?since=${THIRTY_DAYS_AGO}&until=${TODAY}" \
+            -H "Authorization: Bearer ${API_KEY}" \
             -H "Content-Type: application/json")
 
-          if echo "$RESPONSE" | jq -e .success > /dev/null; then
-            echo "$RESPONSE" | jq .result > src/data/analytics.json
+          echo "API Response Status: $(echo "$RESPONSE" | jq '.success')"
+          
+          if echo "$RESPONSE" | jq -e '.success == true' > /dev/null; then
+            mkdir -p src/data
+            echo "$RESPONSE" | jq '.result' > src/data/analytics.json
+            echo "Analytics data saved successfully"
           else
-            echo "Cloudflare API request failed"
+            echo "Cloudflare API request failed with error:"
+            echo "$RESPONSE" | jq '.errors'
             exit 1
           fi
+        env:
+          ZONE_ID: ${{ secrets.ZONE_ID }}
+          API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
 
       - name: Commit and Push Changes
         run: |
@@ -46,23 +58,30 @@ jobs:
           fi
 
       - name: Send Email Report via Resend API
+        if: success()
         run: |
-          REPORT=$(jq -r '.totals | {requests, cachedRequests, uncachedRequests, threats, bandwidth, uniqueVisitors}' src/data/analytics.json)
+          if [ -f "src/data/analytics.json" ]; then
+            REPORT=$(jq -r '.totals | {requests, cachedRequests, uncachedRequests, threats, bandwidth, uniqueVisitors}' src/data/analytics.json)
+            
+            # Format the JSON report nicely for email
+            FORMATTED_REPORT=$(echo "$REPORT" | jq -r '. | to_entries | map("\(.key): \(.value)") | join("\n")')
+            
+            JSON_PAYLOAD=$(jq -n --arg from "$FROM_EMAIL" \
+                                --arg to "$TO_EMAIL" \
+                                --arg subject "Cloudflare Analytics Report - $(date -u +"%Y-%m-%d")" \
+                                --arg text "Cloudflare Web Analytics Report:\n\n$FORMATTED_REPORT" \
+                                '{from: $from, to: [$to], subject: $subject, text: $text}')
 
-          JSON_PAYLOAD=$(jq -n --arg from "${{ secrets.FROM_EMAIL }}" \
-                              --arg to "${{ secrets.TO_EMAIL }}" \
-                              --arg subject "Cloudflare Analytics Report - $(date -u)" \
-                              --arg text "Cloudflare Web Analytics Report:\n\n$REPORT" \
-                              '{from: $from, to: [$to], subject: $subject, text: $text}')
-
-          curl -X POST "https://api.resend.com/emails" \
-            -H "Authorization: Bearer ${{ secrets.RESEND_API_KEY }}" \
-            -H "Content-Type: application/json" \
-            -d "$JSON_PAYLOAD"
-
-    env:
-      ZONE_ID: ${{ secrets.ZONE_ID }}
-      API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
-      FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
-      TO_EMAIL: ${{ secrets.TO_EMAIL }}
-      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+            SEND_RESPONSE=$(curl -s -X POST "https://api.resend.com/emails" \
+              -H "Authorization: Bearer $RESEND_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d "$JSON_PAYLOAD")
+              
+            echo "Email sending response: $SEND_RESPONSE"
+          else
+            echo "Analytics file not found, skipping email report"
+          fi
+        env:
+          FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
+          TO_EMAIL: ${{ secrets.TO_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
