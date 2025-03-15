@@ -80,11 +80,18 @@ Visit `http://localhost:4321` to see your site in action.
 
 The workflow uses a few environment variables that you can configure as repository secrets:
 
+#### Configure BASE_URL Secret
+
+This is crucial for proper site functioning:
+
 1. Go to "Settings" > "Secrets and variables" > "Actions"
-2. Add the following secrets if needed:
-   - `BASE_URL`: Your site URL (e.g., https://yourusername.github.io/linkarooie-3)
-   - `POSTHOG_KEY`: PostHog API key (optional - for analytics)
-   - `POSTHOG_HOST`: PostHog host URL (optional - for analytics)
+2. Add the `BASE_URL` secret:
+   - For GitHub Pages: `https://yourusername.github.io/linkarooie-3`
+   - For custom domain: `https://yourdomain.com`
+
+The BASE_URL ensures all relative links work correctly regardless of deployment method.
+
+**Note:** The workflow file references `POSTHOG_KEY` and `POSTHOG_HOST` environment variables, but these aren't currently used in the code. They're likely placeholders for future analytics integration.
 
 #### Deploy!
 
@@ -97,7 +104,30 @@ The workflow uses a few environment variables that you can configure as reposito
 After the GitHub Action completes, your site will be live at:
 `https://yourusername.github.io/linkarooie-3`
 
-If you want to use a custom domain, you can configure it in the GitHub Pages settings.
+### Using a Custom Domain
+
+Want to use your own domain like I did with `linkarooie.com`? No worries, here's how:
+
+1. **Buy a domain** from a decent registrar like Namecheap
+
+2. **Configure DNS records** at your domain registrar:
+
+   - Add a `CNAME` record pointing to `yourusername.github.io`
+
+3. **Set up in GitHub repo**:
+
+   - Go to your repo's "Settings" > "Pages"
+   - Under "Custom domain", enter your domain name and click "Save"
+   - Make sure "Enforce HTTPS" is ticked for secure connections
+
+4. **Update the CNAME file**:
+
+   - The repo already includes a `CNAME` file
+   - Edit it to replace `linkarooie.com` with your own domain name
+
+5. **Update BASE_URL secret**:
+   - Go to "Settings" > "Secrets and variables" > "Actions"
+   - Update the `BASE_URL` to your custom domain (e.g., `https://yourdomain.com`)
 
 ## 🛠️ Customisation
 
