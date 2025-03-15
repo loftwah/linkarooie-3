@@ -4,6 +4,7 @@ import LinkCard from '../components/LinkCard.astro';
 import AchievementCard from '../components/AchievementCard.astro';
 import { Image } from 'astro:assets';
 import { getProfileByUsername, getPublicProfiles } from '../data';
+import type { ImageMetadata } from 'astro';
 
 export async function getStaticPaths() {
   const profiles = getPublicProfiles();
@@ -61,23 +62,34 @@ const ogImage = profile.ogImageUrl;
       
       <p class="mt-4 text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">{profile.description}</p>
       
+      <p class="mt-2 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">{profile.bio}</p>
+      
       <!-- Social Links -->
       {profile.socialLinks.length > 0 && (
         <div class="flex justify-center space-x-4 mt-4">
-          {profile.socialLinks.map(social => (
-            <a 
-              href={social.url} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              class="text-gray-600 hover:text-[#9333ea] dark:text-gray-400 dark:hover:text-[#a5fd0e] transition-all duration-200 transform hover:scale-125"
-              data-track="true"
-              data-id={`social-${social.platform}`}
-              data-type="social"
-            >
-              <i class={`fab fa-${social.platform} text-2xl`}></i>
-              <span class="sr-only">{social.platform}</span>
-            </a>
-          ))}
+          {profile.socialLinks.map(social => {
+            // Special handling for twitter/x-twitter
+            const iconClass = social.platform === 'x-twitter' 
+              ? 'fab fa-x-twitter text-2xl' 
+              : `fab fa-${social.platform} text-2xl`;
+            
+            const screenReaderText = social.platform === 'x-twitter' ? 'Twitter/X' : social.platform;
+            
+            return (
+              <a 
+                href={social.url} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="text-gray-600 hover:text-[#9333ea] dark:text-gray-400 dark:hover:text-[#a5fd0e] transition-all duration-200 transform hover:scale-125"
+                data-track="true"
+                data-id={`social-${social.platform}`}
+                data-type="social"
+              >
+                <i class={iconClass}></i>
+                <span class="sr-only">{screenReaderText}</span>
+              </a>
+            );
+          })}
         </div>
       )}
       

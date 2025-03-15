@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import DirectoryGrid from '../components/DirectoryGrid.astro';
+import Directory from '../components/Directory.astro';
 import { getDirectoryProfiles } from '../data';
 import { Image } from 'astro:assets';
 import backgroundImage from '../assets/background.svg';
@@ -53,7 +53,7 @@ const directoryProfiles = getDirectoryProfiles();
         </p>
       </div>
       
-      <DirectoryGrid profiles={directoryProfiles} />
+      <Directory profiles={directoryProfiles} />
     </div>
   </div>
   

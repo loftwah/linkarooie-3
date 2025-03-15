@@ -1,5 +1,8 @@
+// Import ImageMetadata type from Astro
+import type { ImageMetadata } from 'astro';
+
 export interface SocialLink {
-    platform: 'github' | 'twitter' | 'bluesky' | 'linkedin';
+    platform: 'github' | 'twitter' | 'x-twitter' | 'bluesky' | 'linkedin';
     url: string;
   }
   
@@ -27,9 +30,9 @@ export interface SocialLink {
     name: string;
     username: string;
     description: string;
-    avatarUrl: string;
-    bannerUrl: string;
-    ogImageUrl: string;
+    avatarUrl: string | ImageMetadata;
+    bannerUrl: string | ImageMetadata;
+    ogImageUrl: string | ImageMetadata;
     ogTitle: string;
     ogDescription: string;
     bio: string;

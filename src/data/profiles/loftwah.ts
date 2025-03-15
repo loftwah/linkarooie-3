@@ -1,4 +1,4 @@
-import { Profile } from '../../types';
+import type { Profile } from '../../types';
 import avatarImage from '../../assets/images/loftwah_avatar.jpg';
 import bannerImage from '../../assets/images/loftwah_banner.jpg';
 import ogImage from '../../assets/images/loftwah_og.jpg';
@@ -12,7 +12,7 @@ export const loftwah: Profile = {
   ogImageUrl: ogImage,
   ogTitle: "Dean Lofts (Loftwah) - Single Dad and Senior DevOps Engineer",
   ogDescription: "Connect with Dean Lofts, a developer, CTO, creator, and tech enthusiast. Explore my projects, content, and social links all in one place.",
-  bio: "Creator of Linkarooie, DevOps Engineer. Hit me up on Twitter (@loftwah).",
+  bio: "Creator of Linkarooie, DevOps Engineer. Hit me up on Twitter/X.",
   tags: [
     "AWS",
     "DevOps",
@@ -28,7 +28,7 @@ export const loftwah: Profile = {
   showInDirectory: true,
   socialLinks: [
     { platform: "github", url: "https://github.com/loftwah" },
-    { platform: "twitter", url: "https://twitter.com/loftwah" },
+    { platform: "x-twitter", url: "https://twitter.com/loftwah" },
     { platform: "bluesky", url: "https://bsky.app/profile/loftwah.bsky.social" },
     { platform: "linkedin", url: "https://linkedin.com/in/deanlofts" }
   ],
