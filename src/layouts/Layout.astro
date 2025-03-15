@@ -6,6 +6,7 @@ import { ViewTransitions } from 'astro:transitions';
 import { Image } from 'astro:assets';
 import defaultOgImage from '../assets/images/linkarooie_og.jpg';
 import icon from '../assets/images/icon.png';
+import PostHog from '../components/PostHog.astro';
 
 interface Props {
   title: string;
@@ -23,14 +24,6 @@ const {
 
 // Handle both imported image objects and string paths
 const ogImageUrl = typeof ogImage === 'string' ? ogImage : ogImage.src;
-
-// Get environment variables for PostHog
-const posthogKey = import.meta.env.POSTHOG_KEY || 'phc_BrmIHTxcm8cDyDjAGkWAimepYqJhSaXiXIVDBeMOHUM';
-const posthogHost = import.meta.env.POSTHOG_HOST || 'https://us.i.posthog.com';
-
-// Add a flag to disable PostHog in development
-const isProduction = import.meta.env.PROD;
-const enablePostHog = isProduction;
 ---
 
 <!DOCTYPE html>
@@ -52,6 +45,9 @@ const enablePostHog = isProduction;
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="twitter:card" content="summary_large_image" />
+    
+    <!-- PostHog Analytics -->
+    <PostHog username={username} />
     
     <!-- Dark mode script - Must be inline and run before any rendering -->
     <script is:inline>
@@ -191,76 +187,6 @@ const enablePostHog = isProduction;
           });
         }
       });
-    </script>
-    
-    <!-- PostHog Analytics - Optimized and Fixed for Link-in-Bio -->
-    <script is:inline define:vars={{ posthogKey, posthogHost, username, enablePostHog }}>
-      // PostHog standard loading snippet
-      !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
-
-      // Enable analytics (adjust this logic as needed)
-      const analyticsEnabled = true;
-
-      if (analyticsEnabled && typeof window !== 'undefined') {
-        try {
-          // Initialize PostHog with minimal, recursion-safe configuration
-          posthog.init(posthogKey, {
-            api_host: posthogHost,
-            capture_pageview: false,         // Manual page view tracking
-            autocapture: false,              // Disable autocapture to prevent recursion
-            session_recording: { enabled: false },
-            property_blacklist: ['$lib', '$active_feature_flags', '$enabled_feature_flags'],
-            disable_session_recording: true,
-            disable_feature_flags: true,
-            debug: false,
-            bootstrap: { distinctID: 'link-bio-user' }
-          });
-
-          // Initial page view and link click setup
-          window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-              // Capture initial page view if PostHog is loaded
-              if (posthog.__loaded) {
-                try {
-                  posthog.capture('pageview', {
-                    page: window.location.pathname,
-                    profile: username || 'home'
-                  });
-                } catch (e) {}
-              }
-
-              // Single document-level listener for link clicks
-              document.addEventListener('click', (event) => {
-                if (event.target.tagName === 'A' && event.target.href && posthog.__loaded) {
-                  try {
-                    posthog.capture('link_clicked', {
-                      url: event.target.href,
-                      text: event.target.innerText || event.target.textContent || 'Unknown',
-                      profile: username || 'home'
-                    });
-                  } catch (e) {}
-                }
-              });
-            }, 1000); // Delay to ensure DOM and PostHog are ready
-          });
-
-          // Handle Astro page transitions
-          document.addEventListener('astro:after-swap', () => {
-            setTimeout(() => {
-              if (posthog.__loaded) {
-                try {
-                  posthog.capture('pageview', {
-                    page: window.location.pathname,
-                    profile: username || 'home'
-                  });
-                } catch (e) {}
-              }
-            }, 1000); // Delay to debounce rapid transitions
-          });
-        } catch (e) {
-          console.warn('PostHog setup error:', e);
-        }
-      }
     </script>
   </body>
 </html>
