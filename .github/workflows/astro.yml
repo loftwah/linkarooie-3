@@ -17,8 +17,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      POSTHOG_KEY: ${{ secrets.POSTHOG_KEY }}
-      POSTHOG_HOST: ${{ secrets.POSTHOG_HOST }}
       BASE_URL: ${{ secrets.BASE_URL }}
     steps:
       - name: Checkout your repository using git
