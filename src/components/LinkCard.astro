@@ -8,6 +8,9 @@ interface Props {
 
 const { link } = Astro.props;
 const isHidden = link.hidden || false;
+
+// Generate unique ID for this hidden link
+const hiddenLinkId = isHidden ? `hidden-link-${link.id}` : '';
 ---
 
 {!isHidden && (
@@ -35,392 +38,339 @@ const isHidden = link.hidden || false;
 )}
 
 {isHidden && (
-  <script define:vars={{ link }}>
-    // Simply store hidden links for later discovery via cheat code
-    if (typeof window !== 'undefined') {
-      // Initialize the hidden items collection if needed
-      if (!window.__hiddenItems) {
-        window.__hiddenItems = [];
-        
-        // Set up the cheat code detector (only once)
-        let keySequence = '';
-        const cheatCode = 'iddqd';
-        
-        document.addEventListener('keydown', function(e) {
-          // Add the key to the sequence
-          keySequence += e.key.toLowerCase();
-          
-          // Keep only the last N characters where N is the length of the cheat code
-          if (keySequence.length > cheatCode.length) {
-            keySequence = keySequence.substring(keySequence.length - cheatCode.length);
-          }
-          
-          // Check if the sequence matches the cheat code AND we're on the loftwah profile
-          if (keySequence === cheatCode && isLoftwahProfile()) {
-            // Clear the sequence to prevent multiple triggers
-            keySequence = '';
-            
-            // Show all hidden items
-            showHiddenItemsOverlay();
-          }
-        });
-        
-        // Function to check if we're on the loftwah profile
-        function isLoftwahProfile() {
-          // Check if URL contains 'loftwah'
-          const isLoftwahUrl = window.location.pathname.toLowerCase().includes('loftwah');
-          
-          // Check if page has elements that indicate we're on the loftwah profile
-          // For example, look for a heading or profile element with 'loftwah' text
-          const profileElements = document.querySelectorAll('h1, h2, h3, .profile-name, [data-username]');
-          let hasLoftwahElement = false;
-          
-          profileElements.forEach(element => {
-            if (element.textContent.toLowerCase().includes('loftwah') || 
-                (element.getAttribute('data-username') || '').toLowerCase() === 'loftwah') {
-              hasLoftwahElement = true;
-            }
-          });
-          
-          return isLoftwahUrl || hasLoftwahElement;
-        }
-        
-        // Function to display the hidden items overlay
-        window.showHiddenItemsOverlay = function() {
-          // Only show the overlay if we're on the loftwah profile
-          if (!isLoftwahProfile()) return;
-          
-          // Check if overlay already exists
-          if (document.getElementById('hidden-items-overlay')) {
-            return;
-          }
-          
-          // Create overlay
-          const overlay = document.createElement('div');
-          overlay.id = 'hidden-items-overlay';
-          overlay.style.position = 'fixed';
-          overlay.style.top = '0';
-          overlay.style.left = '0';
-          overlay.style.width = '100%';
-          overlay.style.height = '100%';
-          overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.95)';
-          overlay.style.backgroundImage = 'radial-gradient(ellipse at center, rgba(10,20,30,0.4) 0%, rgba(0,0,0,0.8) 100%)';
-          overlay.style.zIndex = '10000';
-          overlay.style.overflowY = 'auto';
-          overlay.style.padding = '30px 20px';
-          overlay.style.boxSizing = 'border-box';
-          
-          // Create container with max width
-          const container = document.createElement('div');
-          container.style.maxWidth = '1100px';
-          container.style.margin = '0 auto';
-          container.style.position = 'relative';
-          overlay.appendChild(container);
-          
-          // Add title with better styling
-          const title = document.createElement('h2');
-          title.innerHTML = '🎮 <span style="color:#a5fd0e">SECRET</span> <span style="color:#ff9500">DISCOVERIES</span>';
-          title.style.color = '#fff';
-          title.style.textAlign = 'center';
-          title.style.marginBottom = '25px';
-          title.style.fontSize = '32px';
-          title.style.fontWeight = 'bold';
-          title.style.textShadow = '0 0 10px rgba(165, 253, 14, 0.5)';
-          title.style.letterSpacing = '1px';
-          container.appendChild(title);
-          
-          // Create better close button
-          const closeBtn = document.createElement('button');
-          closeBtn.innerHTML = '&times;';
-          closeBtn.style.position = 'absolute';
-          closeBtn.style.top = '0';
-          closeBtn.style.right = '0';
-          closeBtn.style.background = 'rgba(0,0,0,0.3)';
-          closeBtn.style.border = '2px solid rgba(255,255,255,0.2)';
-          closeBtn.style.borderRadius = '50%';
-          closeBtn.style.width = '40px';
-          closeBtn.style.height = '40px';
-          closeBtn.style.display = 'flex';
-          closeBtn.style.alignItems = 'center';
-          closeBtn.style.justifyContent = 'center';
-          closeBtn.style.color = '#fff';
-          closeBtn.style.fontSize = '24px';
-          closeBtn.style.cursor = 'pointer';
-          closeBtn.style.transition = 'all 0.2s ease';
-          closeBtn.onmouseover = function() {
-            this.style.backgroundColor = 'rgba(255,50,50,0.4)';
-            this.style.transform = 'scale(1.1)';
-          };
-          closeBtn.onmouseout = function() {
-            this.style.backgroundColor = 'rgba(0,0,0,0.3)';
-            this.style.transform = 'scale(1)';
-          };
-          closeBtn.onclick = function() {
-            document.body.removeChild(overlay);
-            // Restore scrolling on body
-            document.body.style.overflow = '';
-          };
-          container.appendChild(closeBtn);
-          
-          // Add styled key info box
-          const keyInfo = document.createElement('div');
-          keyInfo.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-          keyInfo.style.border = '1px solid rgba(165, 253, 14, 0.3)';
-          keyInfo.style.borderRadius = '5px';
-          keyInfo.style.padding = '12px 15px';
-          keyInfo.style.maxWidth = '500px';
-          keyInfo.style.margin = '0 auto 30px auto';
-          keyInfo.style.textAlign = 'center';
-          keyInfo.innerHTML = `
-            <p style="color:#a5fd0e; font-weight:bold; font-size:16px; margin:0 0 5px 0;">GOD MODE ACTIVATED</p>
-            <p style="color:#ddd; margin:0; font-size:14px;">You typed the secret code: <span style="color:#ff9500; font-weight:bold">IDDQD</span></p>
-          `;
-          container.appendChild(keyInfo);
-          
-          // Container for items with better styling
-          const itemsContainer = document.createElement('div');
-          itemsContainer.style.display = 'grid';
-          itemsContainer.style.gridTemplateColumns = 'repeat(auto-fit, minmax(300px, 1fr))';
-          itemsContainer.style.gap = '25px';
-          itemsContainer.style.marginTop = '25px';
-          itemsContainer.style.justifyContent = 'center';
-          
-          // Section header styling
-          const sectionHeaderStyle = 'width: 100%; text-align: center; border-bottom: 2px solid rgba(165, 253, 14, 0.3); margin-bottom: 25px; padding-bottom: 10px;';
-          container.appendChild(itemsContainer);
-          
-          // Add items to the container
-          if (window.__hiddenItems.length === 0) {
-            const noItems = document.createElement('div');
-            noItems.style.gridColumn = '1 / -1';
-            noItems.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
-            noItems.style.border = '1px dashed rgba(255, 255, 255, 0.2)';
-            noItems.style.borderRadius = '8px';
-            noItems.style.padding = '40px 20px';
-            noItems.style.textAlign = 'center';
-            
-            const noItemsIcon = document.createElement('div');
-            noItemsIcon.textContent = '🔍';
-            noItemsIcon.style.fontSize = '48px';
-            noItemsIcon.style.marginBottom = '20px';
-            noItems.appendChild(noItemsIcon);
-            
-            const noItemsText = document.createElement('p');
-            noItemsText.textContent = 'No hidden items discovered yet. Keep exploring!';
-            noItemsText.style.color = '#aaa';
-            noItemsText.style.fontSize = '18px';
-            noItemsText.style.margin = '0';
-            noItems.appendChild(noItemsText);
-            
-            itemsContainer.appendChild(noItems);
-          } else {
-            // Separate links and achievements
-            const links = window.__hiddenItems.filter(item => item.type === 'link');
-            const achievements = window.__hiddenItems.filter(item => item.type === 'achievement');
-            
-            // Create section headers if we have items
-            if (links.length > 0) {
-              const linksHeader = document.createElement('div');
-              linksHeader.style.cssText = sectionHeaderStyle;
-              linksHeader.style.gridColumn = '1 / -1';
-              
-              const linksTitle = document.createElement('h3');
-              linksTitle.innerHTML = '🔗 <span style="color:#a5fd0e">Hidden Links</span>';
-              linksTitle.style.margin = '0';
-              linksTitle.style.fontSize = '22px';
-              linksHeader.appendChild(linksTitle);
-              
-              itemsContainer.appendChild(linksHeader);
-              
-              // Create a special grid just for the links
-              const linksGrid = document.createElement('div');
-              linksGrid.style.gridColumn = '1 / -1';
-              linksGrid.style.display = 'flex';
-              linksGrid.style.flexWrap = 'wrap';
-              linksGrid.style.justifyContent = 'center';
-              linksGrid.style.gap = '25px';
-              linksGrid.style.width = '100%';
-              linksGrid.style.marginBottom = '30px';
-              itemsContainer.appendChild(linksGrid);
-              
-              // Add links with improved styling
-              links.forEach(item => {
-                const card = document.createElement('div');
-                card.style.backgroundColor = 'rgba(30, 30, 40, 0.8)';
-                card.style.borderRadius = '8px';
-                card.style.padding = '20px';
-                card.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2)';
-                card.style.border = '1px solid rgba(165, 253, 14, 0.2)';
-                card.style.transition = 'transform 0.2s ease, box-shadow 0.2s ease';
-                card.style.width = '340px';
-                card.style.flex = '0 0 340px';
-                
-                // Add hover effect
-                card.onmouseover = function() {
-                  this.style.transform = 'translateY(-5px)';
-                  this.style.boxShadow = '0 8px 20px rgba(0,0,0,0.3)';
-                };
-                card.onmouseout = function() {
-                  this.style.transform = 'translateY(0)';
-                  this.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2)';
-                };
-                
-                const title = document.createElement('h3');
-                title.innerHTML = `🔗 <a href="${item.url}" target="_blank" style="color: #a5fd0e; text-decoration: none;">${item.title}</a>`;
-                title.style.marginTop = '0';
-                title.style.marginBottom = '15px';
-                title.style.fontSize = '18px';
-                card.appendChild(title);
-                
-                const desc = document.createElement('p');
-                desc.textContent = item.description;
-                desc.style.color = '#ddd';
-                desc.style.fontSize = '14px';
-                desc.style.lineHeight = '1.5';
-                desc.style.margin = '0 0 20px 0';
-                card.appendChild(desc);
-                
-                const footer = document.createElement('div');
-                footer.style.display = 'flex';
-                footer.style.justifyContent = 'flex-end';
-                footer.style.borderTop = '1px solid rgba(255,255,255,0.1)';
-                footer.style.paddingTop = '10px';
-                footer.style.marginTop = 'auto';
-                
-                const idBadge = document.createElement('span');
-                idBadge.textContent = `#${item.id}`;
-                idBadge.style.fontSize = '12px';
-                idBadge.style.color = '#666';
-                idBadge.style.backgroundColor = 'rgba(0,0,0,0.2)';
-                idBadge.style.padding = '3px 8px';
-                idBadge.style.borderRadius = '4px';
-                footer.appendChild(idBadge);
-                
-                card.appendChild(footer);
-                linksGrid.appendChild(card);
-              });
-            }
-            
-            // Add achievements section if we have any
-            if (achievements.length > 0) {
-              const achievementsHeader = document.createElement('div');
-              achievementsHeader.style.cssText = sectionHeaderStyle;
-              achievementsHeader.style.gridColumn = '1 / -1';
-              achievementsHeader.style.borderBottom = '2px solid rgba(255, 149, 0, 0.3)';
-              
-              const achievementsTitle = document.createElement('h3');
-              achievementsTitle.innerHTML = '🏆 <span style="color:#ff9500">Achievements</span>';
-              achievementsTitle.style.margin = '0';
-              achievementsTitle.style.fontSize = '22px';
-              achievementsHeader.appendChild(achievementsTitle);
-              
-              itemsContainer.appendChild(achievementsHeader);
-              
-              // Create a special grid just for the achievements
-              const achievementsGrid = document.createElement('div');
-              achievementsGrid.style.gridColumn = '1 / -1';
-              achievementsGrid.style.display = 'flex';
-              achievementsGrid.style.flexWrap = 'wrap';
-              achievementsGrid.style.justifyContent = 'center';
-              achievementsGrid.style.gap = '25px';
-              achievementsGrid.style.width = '100%';
-              itemsContainer.appendChild(achievementsGrid);
-              
-              // Add achievement cards
-              achievements.forEach(item => {
-                const card = document.createElement('div');
-                card.style.backgroundColor = 'rgba(30, 30, 40, 0.8)';
-                card.style.borderRadius = '8px';
-                card.style.padding = '20px';
-                card.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2)';
-                card.style.border = '1px solid rgba(255, 149, 0, 0.2)';
-                card.style.transition = 'transform 0.2s ease, box-shadow 0.2s ease';
-                card.style.width = '340px';
-                card.style.flex = '0 0 340px';
-                
-                // Add hover effect
-                card.onmouseover = function() {
-                  this.style.transform = 'translateY(-5px)';
-                  this.style.boxShadow = '0 8px 20px rgba(0,0,0,0.3)';
-                };
-                card.onmouseout = function() {
-                  this.style.transform = 'translateY(0)';
-                  this.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2)';
-                };
-                
-                const title = document.createElement('h3');
-                title.innerHTML = `🏆 <a href="${item.url}" target="_blank" style="color: #ff9500; text-decoration: none;">${item.title}</a>`;
-                title.style.marginTop = '0';
-                title.style.marginBottom = '15px';
-                title.style.fontSize = '18px';
-                card.appendChild(title);
-                
-                const desc = document.createElement('p');
-                desc.textContent = item.description;
-                desc.style.color = '#ddd';
-                desc.style.fontSize = '14px';
-                desc.style.lineHeight = '1.5';
-                desc.style.margin = '0 0 15px 0';
-                card.appendChild(desc);
-                
-                if (item.date) {
-                  const date = document.createElement('p');
-                  date.textContent = item.date;
-                  date.style.color = '#ff9500';
-                  date.style.fontSize = '13px';
-                  date.style.fontWeight = 'bold';
-                  date.style.margin = '0 0 10px 0';
-                  card.appendChild(date);
-                }
-                
-                const footer = document.createElement('div');
-                footer.style.display = 'flex';
-                footer.style.justifyContent = 'flex-end';
-                footer.style.borderTop = '1px solid rgba(255,255,255,0.1)';
-                footer.style.paddingTop = '10px';
-                footer.style.marginTop = 'auto';
-                
-                const idBadge = document.createElement('span');
-                idBadge.textContent = `#${item.id}`;
-                idBadge.style.fontSize = '12px';
-                idBadge.style.color = '#666';
-                idBadge.style.backgroundColor = 'rgba(0,0,0,0.2)';
-                idBadge.style.padding = '3px 8px';
-                idBadge.style.borderRadius = '4px';
-                footer.appendChild(idBadge);
-                
-                card.appendChild(footer);
-                achievementsGrid.appendChild(card);
-              });
-            }
-          }
-          
-          // Add ESC key to close
-          document.addEventListener('keydown', function escHandler(e) {
-            if (e.key === 'Escape') {
-              closeBtn.click();
-              document.removeEventListener('keydown', escHandler);
-            }
-          });
-          
-          // Add to DOM
-          document.body.appendChild(overlay);
-          
-          // Prevent scrolling on body while modal is open
-          document.body.style.overflow = 'hidden';
-        };
+  <div 
+    id={hiddenLinkId}
+    class="hidden" 
+    data-hidden-link="true"
+    data-id={link.id}
+    data-title={link.title}
+    data-url={link.url}
+    data-description={link.description}
+    data-icon={link.icon}
+    data-type="link"
+  ></div>
+)}
+
+<!-- Include this script just once per page -->
+<script>
+  // Only initialize once
+  if (typeof window !== 'undefined' && !window.__hiddenItemsInitialized) {
+    window.__hiddenItemsInitialized = true;
+    
+    // Collect all hidden links from the DOM instead of creating them dynamically
+    window.__hiddenItems = [];
+    document.querySelectorAll('[data-hidden-link="true"]').forEach(el => {
+      window.__hiddenItems.push({
+        id: el.getAttribute('data-id'),
+        title: el.getAttribute('data-title'),
+        url: el.getAttribute('data-url'),
+        description: el.getAttribute('data-description'),
+        icon: el.getAttribute('data-icon'),
+        type: el.getAttribute('data-type')
+      });
+    });
+    
+    // Set up the cheat code detector
+    let keySequence = '';
+    const cheatCode = 'iddqd';
+    
+    document.addEventListener('keydown', function(e) {
+      keySequence += e.key.toLowerCase();
+      if (keySequence.length > cheatCode.length) {
+        keySequence = keySequence.substring(keySequence.length - cheatCode.length);
       }
       
-      // Add this item to the collection if not already there
-      if (!window.__hiddenItems.some(item => item.id === link.id && item.type === 'link')) {
-        window.__hiddenItems.push({
-          id: link.id,
-          title: link.title,
-          url: link.url,
-          description: link.description,
-          type: 'link'
+      if (keySequence === cheatCode && isLoftwahProfile()) {
+        keySequence = '';
+        showHiddenItemsOverlay();
+      }
+    });
+    
+    // Function to check if we're on the loftwah profile
+    function isLoftwahProfile() {
+      const isLoftwahUrl = window.location.pathname.toLowerCase().includes('loftwah');
+      
+      const profileElements = document.querySelectorAll('h1, h2, h3, .profile-name, [data-username]');
+      let hasLoftwahElement = false;
+      
+      profileElements.forEach(element => {
+        if (element.textContent.toLowerCase().includes('loftwah') || 
+            (element.getAttribute('data-username') || '').toLowerCase() === 'loftwah') {
+          hasLoftwahElement = true;
+        }
+      });
+      
+      return isLoftwahUrl || hasLoftwahElement;
+    }
+    
+    // Function to display the hidden items overlay
+    function showHiddenItemsOverlay() {
+      if (!isLoftwahProfile()) return;
+      
+      // Check if overlay already exists
+      if (document.getElementById('hidden-items-overlay')) {
+        document.getElementById('hidden-items-overlay').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        return;
+      }
+      
+      // Create overlay
+      const overlay = document.createElement('div');
+      overlay.id = 'hidden-items-overlay';
+      overlay.style.position = 'fixed';
+      overlay.style.top = '0';
+      overlay.style.left = '0';
+      overlay.style.width = '100%';
+      overlay.style.height = '100%';
+      overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.95)';
+      overlay.style.backgroundImage = 'radial-gradient(ellipse at center, rgba(10,20,30,0.4) 0%, rgba(0,0,0,0.8) 100%)';
+      overlay.style.zIndex = '10000';
+      overlay.style.overflowY = 'auto';
+      overlay.style.padding = '30px 20px';
+      overlay.style.boxSizing = 'border-box';
+      
+      // Create container with max width
+      const container = document.createElement('div');
+      container.style.maxWidth = '1100px';
+      container.style.margin = '0 auto';
+      container.style.position = 'relative';
+      overlay.appendChild(container);
+      
+      // Add title with better styling
+      const title = document.createElement('h2');
+      title.innerHTML = '🎮 <span style="color:#a5fd0e">SECRET</span> <span style="color:#ff9500">DISCOVERIES</span>';
+      title.style.color = '#fff';
+      title.style.textAlign = 'center';
+      title.style.marginBottom = '25px';
+      title.style.fontSize = '32px';
+      title.style.fontWeight = 'bold';
+      title.style.textShadow = '0 0 10px rgba(165, 253, 14, 0.5)';
+      title.style.letterSpacing = '1px';
+      container.appendChild(title);
+      
+      // Create better close button
+      const closeBtn = document.createElement('button');
+      closeBtn.innerHTML = '&times;';
+      closeBtn.style.position = 'absolute';
+      closeBtn.style.top = '0';
+      closeBtn.style.right = '0';
+      closeBtn.style.background = 'rgba(0,0,0,0.3)';
+      closeBtn.style.border = '2px solid rgba(255,255,255,0.2)';
+      closeBtn.style.borderRadius = '50%';
+      closeBtn.style.width = '40px';
+      closeBtn.style.height = '40px';
+      closeBtn.style.display = 'flex';
+      closeBtn.style.alignItems = 'center';
+      closeBtn.style.justifyContent = 'center';
+      closeBtn.style.color = '#fff';
+      closeBtn.style.fontSize = '24px';
+      closeBtn.style.cursor = 'pointer';
+      closeBtn.style.transition = 'all 0.2s ease';
+      closeBtn.onmouseover = function() {
+        this.style.backgroundColor = 'rgba(255,50,50,0.4)';
+        this.style.transform = 'scale(1.1)';
+      };
+      closeBtn.onmouseout = function() {
+        this.style.backgroundColor = 'rgba(0,0,0,0.3)';
+        this.style.transform = 'scale(1)';
+      };
+      closeBtn.onclick = function() {
+        overlay.style.display = 'none';
+        document.body.style.overflow = '';
+      };
+      container.appendChild(closeBtn);
+      
+      // Add styled key info box
+      const keyInfo = document.createElement('div');
+      keyInfo.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+      keyInfo.style.border = '1px solid rgba(165, 253, 14, 0.3)';
+      keyInfo.style.borderRadius = '5px';
+      keyInfo.style.padding = '12px 15px';
+      keyInfo.style.maxWidth = '500px';
+      keyInfo.style.margin = '0 auto 30px auto';
+      keyInfo.style.textAlign = 'center';
+      keyInfo.innerHTML = `
+        <p style="color:#a5fd0e; font-weight:bold; font-size:16px; margin:0 0 5px 0;">GOD MODE ACTIVATED</p>
+        <p style="color:#ddd; margin:0; font-size:14px;">You typed the secret code: <span style="color:#ff9500; font-weight:bold">IDDQD</span></p>
+      `;
+      container.appendChild(keyInfo);
+      
+      // Container for items with better styling
+      const itemsContainer = document.createElement('div');
+      itemsContainer.style.display = 'grid';
+      itemsContainer.style.gridTemplateColumns = 'repeat(auto-fit, minmax(300px, 1fr))';
+      itemsContainer.style.gap = '25px';
+      itemsContainer.style.marginTop = '25px';
+      itemsContainer.style.justifyContent = 'center';
+      
+      // Section header styling
+      const sectionHeaderStyle = 'width: 100%; text-align: center; border-bottom: 2px solid rgba(165, 253, 14, 0.3); margin-bottom: 25px; padding-bottom: 10px;';
+      container.appendChild(itemsContainer);
+      
+      // Render the hidden items
+      renderHiddenItems(itemsContainer);
+      
+      // Add ESC key to close
+      document.addEventListener('keydown', function escHandler(e) {
+        if (e.key === 'Escape') {
+          overlay.style.display = 'none';
+          document.body.style.overflow = '';
+        }
+      });
+      
+      // Add to DOM
+      document.body.appendChild(overlay);
+      document.body.style.overflow = 'hidden';
+    }
+    
+    // Function to render hidden items
+    function renderHiddenItems(container) {
+      // Clear existing content
+      container.innerHTML = '';
+      
+      if (window.__hiddenItems.length === 0) {
+        const noItems = document.createElement('div');
+        noItems.style.gridColumn = '1 / -1';
+        noItems.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+        noItems.style.border = '1px dashed rgba(255, 255, 255, 0.2)';
+        noItems.style.borderRadius = '8px';
+        noItems.style.padding = '40px 20px';
+        noItems.style.textAlign = 'center';
+        
+        const noItemsIcon = document.createElement('div');
+        noItemsIcon.textContent = '🔍';
+        noItemsIcon.style.fontSize = '48px';
+        noItemsIcon.style.marginBottom = '20px';
+        noItems.appendChild(noItemsIcon);
+        
+        const noItemsText = document.createElement('p');
+        noItemsText.textContent = 'No hidden items discovered yet. Keep exploring!';
+        noItemsText.style.color = '#aaa';
+        noItemsText.style.fontSize = '18px';
+        noItemsText.style.margin = '0';
+        noItems.appendChild(noItemsText);
+        
+        container.appendChild(noItems);
+        return;
+      }
+      
+      // Separate links and achievements
+      const links = window.__hiddenItems.filter(item => item.type === 'link');
+      const achievements = window.__hiddenItems.filter(item => item.type === 'achievement');
+      
+      // Create section headers if we have items
+      if (links.length > 0) {
+        const linksHeader = document.createElement('div');
+        linksHeader.style.cssText = 'width: 100%; text-align: center; border-bottom: 2px solid rgba(165, 253, 14, 0.3); margin-bottom: 25px; padding-bottom: 10px;';
+        linksHeader.style.gridColumn = '1 / -1';
+        
+        const linksTitle = document.createElement('h3');
+        linksTitle.innerHTML = '🔗 <span style="color:#a5fd0e">Hidden Links</span>';
+        linksTitle.style.margin = '0';
+        linksTitle.style.fontSize = '22px';
+        linksHeader.appendChild(linksTitle);
+        
+        container.appendChild(linksHeader);
+        
+        // Create a special grid just for the links
+        const linksGrid = document.createElement('div');
+        linksGrid.style.gridColumn = '1 / -1';
+        linksGrid.style.display = 'flex';
+        linksGrid.style.flexWrap = 'wrap';
+        linksGrid.style.justifyContent = 'center';
+        linksGrid.style.gap = '25px';
+        linksGrid.style.width = '100%';
+        linksGrid.style.marginBottom = '30px';
+        container.appendChild(linksGrid);
+        
+        // Add links with improved styling
+        links.forEach(item => {
+          const card = document.createElement('div');
+          card.style.backgroundColor = 'rgba(30, 30, 40, 0.8)';
+          card.style.borderRadius = '8px';
+          card.style.padding = '20px';
+          card.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2)';
+          card.style.border = '1px solid rgba(165, 253, 14, 0.2)';
+          card.style.transition = 'transform 0.2s ease, box-shadow 0.2s ease';
+          card.style.width = '340px';
+          card.style.flex = '0 0 340px';
+          
+          // Add hover effect
+          card.onmouseover = function() {
+            this.style.transform = 'translateY(-5px)';
+            this.style.boxShadow = '0 8px 20px rgba(0,0,0,0.3)';
+          };
+          card.onmouseout = function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2)';
+          };
+          
+          const title = document.createElement('h3');
+          title.innerHTML = `🔗 <a href="${item.url}" target="_blank" style="color: #a5fd0e; text-decoration: none;">${item.title}</a>`;
+          title.style.marginTop = '0';
+          title.style.marginBottom = '15px';
+          title.style.fontSize = '18px';
+          card.appendChild(title);
+          
+          const desc = document.createElement('p');
+          desc.textContent = item.description;
+          desc.style.color = '#ddd';
+          desc.style.fontSize = '14px';
+          desc.style.lineHeight = '1.5';
+          desc.style.margin = '0 0 20px 0';
+          card.appendChild(desc);
+          
+          const footer = document.createElement('div');
+          footer.style.display = 'flex';
+          footer.style.justifyContent = 'flex-end';
+          footer.style.borderTop = '1px solid rgba(255,255,255,0.1)';
+          footer.style.paddingTop = '10px';
+          footer.style.marginTop = 'auto';
+          
+          const idBadge = document.createElement('span');
+          idBadge.textContent = `#${item.id}`;
+          idBadge.style.fontSize = '12px';
+          idBadge.style.color = '#666';
+          idBadge.style.backgroundColor = 'rgba(0,0,0,0.2)';
+          idBadge.style.padding = '3px 8px';
+          idBadge.style.borderRadius = '4px';
+          footer.appendChild(idBadge);
+          
+          card.appendChild(footer);
+          linksGrid.appendChild(card);
+        });
+      }
+      
+      // Add achievements section if we have any
+      if (achievements.length > 0) {
+        const achievementsHeader = document.createElement('div');
+        achievementsHeader.style.cssText = 'width: 100%; text-align: center; border-bottom: 2px solid rgba(255, 149, 0, 0.3); margin-bottom: 25px; padding-bottom: 10px;';
+        achievementsHeader.style.gridColumn = '1 / -1';
+        
+        const achievementsTitle = document.createElement('h3');
+        achievementsTitle.innerHTML = '🏆 <span style="color:#ff9500">Achievements</span>';
+        achievementsTitle.style.margin = '0';
+        achievementsTitle.style.fontSize = '22px';
+        achievementsHeader.appendChild(achievementsTitle);
+        
+        container.appendChild(achievementsHeader);
+        
+        // Create a special grid just for the achievements
+        const achievementsGrid = document.createElement('div');
+        achievementsGrid.style.gridColumn = '1 / -1';
+        achievementsGrid.style.display = 'flex';
+        achievementsGrid.style.flexWrap = 'wrap';
+        achievementsGrid.style.justifyContent = 'center';
+        achievementsGrid.style.gap = '25px';
+        achievementsGrid.style.width = '100%';
+        container.appendChild(achievementsGrid);
+        
+        // Add achievement cards
+        achievements.forEach(item => {
+          // Achievement card creation logic (similar to links)
+          // ...
         });
       }
     }
-  </script>
-)}
+  }
+</script>
