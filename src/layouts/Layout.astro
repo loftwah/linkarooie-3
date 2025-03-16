@@ -90,10 +90,13 @@ const ogImageUrl = typeof ogImage === 'string' ? ogImage : ogImage.src;
             </div>
           </div>
           <div class="flex items-center space-x-3 sm:space-x-4">
-            <!-- Dark mode toggle -->
-            <button id="theme-toggle" class="text-[#9333ea] dark:text-[#a5fd0e] hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm p-1.5 sm:p-2 transition-all duration-200 hover:scale-110" aria-label="Toggle dark mode">
-              <i id="theme-toggle-dark-icon" class="fas fa-moon hidden"></i>
-              <i id="theme-toggle-light-icon" class="fas fa-sun hidden"></i>
+            <!-- Dark mode toggle - Enhanced version -->
+            <button id="theme-toggle" class="relative w-10 h-6 rounded-full bg-gray-200 dark:bg-gray-700 p-0.5 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#9333ea] dark:focus:ring-[#a5fd0e]" aria-label="Toggle dark mode">
+              <span class="sr-only">Toggle dark mode</span>
+              <span class="absolute inset-y-0.5 left-0.5 dark:translate-x-4 w-5 h-5 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center transform transition-all duration-300 shadow-md">
+                <i class="fas fa-sun text-yellow-400 absolute transition-opacity duration-300 opacity-100 dark:opacity-0 text-xs"></i>
+                <i class="fas fa-moon text-blue-300 absolute transition-opacity duration-300 opacity-0 dark:opacity-100 text-xs"></i>
+              </span>
             </button>
             <a href="https://github.com/loftwah/linkarooie-3" target="_blank" rel="noopener" class="text-[#9333ea] dark:text-[#a5fd0e] hover:text-[#9333ea]/80 dark:hover:text-[#c7ff5a] transition-all duration-200 hover:scale-110 p-1.5 sm:p-2">
               <span class="sr-only">GitHub</span>
@@ -130,26 +133,11 @@ const ogImageUrl = typeof ogImage === 'string' ? ogImage : ogImage.src;
       // Set up the theme toggle functionality after page load
       document.addEventListener('DOMContentLoaded', () => {
         const themeToggleBtn = document.getElementById('theme-toggle');
-        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
-
-        // Set initial icon state
-        if (document.documentElement.classList.contains('dark')) {
-          themeToggleLightIcon.classList.remove('hidden');
-          themeToggleDarkIcon.classList.add('hidden');
-        } else {
-          themeToggleDarkIcon.classList.remove('hidden');
-          themeToggleLightIcon.classList.add('hidden');
-        }
 
         // Toggle theme on click
         themeToggleBtn.addEventListener('click', () => {
           // Toggle the dark class
           document.documentElement.classList.toggle('dark');
-          
-          // Update icons
-          themeToggleDarkIcon.classList.toggle('hidden');
-          themeToggleLightIcon.classList.toggle('hidden');
           
           // Save preference to localStorage
           if (document.documentElement.classList.contains('dark')) {
@@ -171,24 +159,11 @@ const ogImageUrl = typeof ogImage === 'string' ? ogImage : ogImage.src;
 
         // Re-initialize the toggle button after page navigation
         const themeToggleBtn = document.getElementById('theme-toggle');
-        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
-
-        if (themeToggleBtn && themeToggleDarkIcon && themeToggleLightIcon) {
-          // Set correct icon visibility
-          if (document.documentElement.classList.contains('dark')) {
-            themeToggleLightIcon.classList.remove('hidden');
-            themeToggleDarkIcon.classList.add('hidden');
-          } else {
-            themeToggleDarkIcon.classList.remove('hidden');
-            themeToggleLightIcon.classList.add('hidden');
-          }
-          
+        
+        if (themeToggleBtn) {
           // Re-attach click event
           themeToggleBtn.addEventListener('click', () => {
             document.documentElement.classList.toggle('dark');
-            themeToggleDarkIcon.classList.toggle('hidden');
-            themeToggleLightIcon.classList.toggle('hidden');
             
             if (document.documentElement.classList.contains('dark')) {
               localStorage.theme = 'dark';
