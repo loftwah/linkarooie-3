@@ -18,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       BASE_URL: ${{ secrets.BASE_URL }}
+      POSTHOG_KEY: ${{ secrets.POSTHOG_KEY }}
+      POSTHOG_HOST: ${{ secrets.POSTHOG_HOST }}
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v4
@@ -25,6 +27,8 @@ jobs:
         uses: withastro/action@v3
         env:
           BASE_URL: ${{ secrets.BASE_URL }}
+          POSTHOG_KEY: ${{ secrets.POSTHOG_KEY }}
+          POSTHOG_HOST: ${{ secrets.POSTHOG_HOST }}
 
   deploy:
     needs: build
