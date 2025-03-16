@@ -5,6 +5,7 @@ import { getDirectoryProfiles } from '../data';
 import { Image } from 'astro:assets';
 import backgroundImage from '../assets/background.svg';
 import ogImage from '../assets/images/linkarooie_og.jpg';
+import ogImageLight from '../assets/images/linkarooie_og_light.jpg';
 
 const directoryProfiles = getDirectoryProfiles();
 ---
@@ -32,10 +33,17 @@ const directoryProfiles = getDirectoryProfiles();
         <!-- OG Image Display -->
         <div class="mt-6 sm:mt-8 flex justify-center px-4 sm:px-0">
           <div class="relative rounded-xl overflow-hidden shadow-xl w-full max-w-sm sm:max-w-md border-2 border-[#9333ea]/20 dark:border-[#a5fd0e]/20">
+            <!-- Light mode image (hidden in dark mode) -->
+            <Image 
+              src={ogImageLight} 
+              alt="Linkarooie Preview" 
+              class="w-full h-auto transform hover:scale-105 transition-transform duration-300 dark:hidden"
+            />
+            <!-- Dark mode image (hidden in light mode) -->
             <Image 
               src={ogImage} 
               alt="Linkarooie Preview" 
-              class="w-full h-auto transform hover:scale-105 transition-transform duration-300"
+              class="w-full h-auto transform hover:scale-105 transition-transform duration-300 hidden dark:block"
             />
           </div>
         </div>
