@@ -149,7 +149,7 @@ async function generateOGImage(profile, options = {}) {
                               props: {
                                 style: {
                                   display: 'flex',
-                                  fontSize: '60px',
+                                  fontSize: '62px',
                                   fontWeight: 700,
                                   margin: 0,
                                   lineHeight: 1.1,
@@ -162,7 +162,7 @@ async function generateOGImage(profile, options = {}) {
                               props: {
                                 style: {
                                   display: 'flex',
-                                  fontSize: '32px',
+                                  fontSize: '34px',
                                   fontWeight: 400,
                                   margin: 0,
                                   color: currentTheme.accent,
@@ -175,7 +175,7 @@ async function generateOGImage(profile, options = {}) {
                               props: {
                                 style: {
                                   display: 'flex',
-                                  fontSize: '24px',
+                                  fontSize: '26px',
                                   fontWeight: 500,
                                   margin: 0,
                                   color: currentTheme.headerText,
@@ -195,7 +195,7 @@ async function generateOGImage(profile, options = {}) {
                   props: {
                     style: {
                       display: 'flex',
-                      fontSize: '22px',
+                      fontSize: '24px',
                       lineHeight: 1.6,
                       color: currentTheme.secondaryText,
                       maxWidth: '800px',
@@ -234,7 +234,7 @@ async function generateOGImage(profile, options = {}) {
                                 color: currentTheme.tagText,
                                 padding: '10px 20px',
                                 borderRadius: '30px',
-                                fontSize: '18px',
+                                fontSize: '20px',
                                 fontWeight: 500,
                                 marginBottom: '6px',
                               },
@@ -262,7 +262,7 @@ async function generateOGImage(profile, options = {}) {
                         props: {
                           style: {
                             display: 'flex',
-                            fontSize: '20px',
+                            fontSize: '22px',
                             color: currentTheme.accent,
                             fontWeight: 700,
                           },
