@@ -87,21 +87,6 @@ export const loftwah: Profile = {
       ]
     },
     {
-      name: "Bun",
-      description: "Bun is a fast, all-in-one JavaScript runtime and toolkit designed as an alternative to Node.js. It offers built-in support for TypeScript, JSX, and a package manager, aiming to simplify and accelerate web development workflows.",
-      citation: {
-        title: "Bun: A Fast JavaScript Runtime",
-        url: "https://bun.sh/"
-      },
-      related_work: [
-        {
-          title: "Ahoy! Set Sail with TypeScript and Bun: A Pirate's Guide for 2024",
-          url: "https://blog.deanlofts.xyz/guides/typescript-getting-started/",
-          description: "A guide to getting started with TypeScript and Bun in 2024."
-        }
-      ]
-    },
-    {
       name: "DevOps",
       description: "DevOps is a set of practices combining software development (Dev) and IT operations (Ops) to shorten development cycles, increase deployment frequency, and improve collaboration. It leverages automation tools and cultural philosophies like CI/CD to enhance software delivery.",
       citation: {
@@ -162,21 +147,6 @@ export const loftwah: Profile = {
       ]
     },
     {
-      name: "Open Source",
-      description: "Open source refers to software with publicly available source code that anyone can inspect, modify, and distribute. It fosters collaboration, transparency, and innovation, driving projects like Linux, Docker, and many frameworks.",
-      citation: {
-        title: "About Open Source",
-        url: "https://opensource.org/about"
-      },
-      related_work: [
-        {
-          title: "BioDrop: A Fresh Start for the Open Source Project Formerly Known as LinkFree",
-          url: "https://loftwah.medium.com/biodrop-a-fresh-start-for-the-open-source-project-formerly-known-as-linkfree-a47d4bdf8c56",
-          description: "An article about the evolution of an open source project."
-        }
-      ]
-    },
-    {
       name: "Postgres",
       description: "PostgreSQL is a powerful, open-source relational database management system known for its robustness, extensibility, and standards compliance. It supports advanced data types and is widely used in web applications and data-driven systems.",
       citation: {
@@ -196,21 +166,6 @@ export const loftwah: Profile = {
           title: "Deploying FastAPI with UV, Nginx, and AWS ECS: A Step-by-Step Guide",
           url: "https://blog.deanlofts.xyz/guides/uv-fastapi-ecs/",
           description: "A comprehensive guide for deploying Python applications with UV."
-        }
-      ]
-    },
-    {
-      name: "Ruby",
-      description: "Ruby is an open-source, dynamic programming language focused on simplicity and productivity. Its elegant syntax and object-oriented design make it popular for web development, especially via the Ruby on Rails framework.",
-      citation: {
-        title: "About Ruby",
-        url: "https://www.ruby-lang.org/en/about/"
-      },
-      related_work: [
-        {
-          title: "Linkarooie (original)",
-          url: "https://github.com/loftwah/linkarooie",
-          description: "The original version of Linkarooie built with Ruby."
         }
       ]
     },
