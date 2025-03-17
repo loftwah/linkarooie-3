@@ -179,7 +179,14 @@ const ogImage = profile.ogImageUrl;
 
     // Function to set up modal functionality
     function setupModal() {
+      // First check if we're on a profile page (by checking if the modal elements exist)
       const modal = document.getElementById('tag-modal');
+      
+      // If modal doesn't exist, we're probably not on a profile page, so exit gracefully
+      if (!modal) {
+        return;
+      }
+      
       const modalContent = document.getElementById('modal-content');
       const title = document.getElementById('modal-title');
       const description = document.getElementById('modal-description');
@@ -187,8 +194,8 @@ const ogImage = profile.ogImageUrl;
       const relatedWorkDiv = document.getElementById('modal-related-work');
       const closeButtons = document.querySelectorAll('#close-modal, #close-modal-bottom');
 
-      if (!modal || !modalContent || !title || !description || !citationDiv || !relatedWorkDiv || !closeButtons.length) {
-        console.error('Modal elements not found');
+      if (!modalContent || !title || !description || !citationDiv || !relatedWorkDiv || !closeButtons.length) {
+        console.error('Some modal elements not found');
         return;
       }
 
