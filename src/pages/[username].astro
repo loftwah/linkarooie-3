@@ -68,13 +68,10 @@ const ogImage = profile.ogImageUrl;
       {profile.socialLinks.length > 0 && (
         <div class="flex justify-center space-x-4 mt-4">
           {profile.socialLinks.map(social => {
-            // Special handling for twitter/x-twitter
             const iconClass = social.platform === 'x-twitter' 
               ? 'fab fa-x-twitter text-2xl' 
               : `fab fa-${social.platform} text-2xl`;
-            
             const screenReaderText = social.platform === 'x-twitter' ? 'Twitter/X' : social.platform;
-            
             return (
               <a 
                 href={social.url} 
@@ -93,27 +90,29 @@ const ogImage = profile.ogImageUrl;
         </div>
       )}
       
-      <!-- Tags -->
+      <!-- Tags (clickable buttons to open modal) -->
       {profile.tags.length > 0 && (
         <div class="flex flex-wrap justify-center gap-2 mt-6 max-w-md mx-auto">
           {profile.tags.map(tag => (
-            <span class="px-3 py-1 bg-gray-200 dark:bg-gray-800 text-[#9333ea] dark:text-[#a5fd0e] rounded-full text-sm border border-[#9333ea] dark:border-[#a5fd0e]">
-              {tag}
-            </span>
+            <button 
+              data-tag-name={tag.name}
+              class="px-3 py-1 bg-gray-200 dark:bg-gray-800 text-[#9333ea] dark:text-[#a5fd0e] rounded-full text-sm border border-[#9333ea] dark:border-[#a5fd0e] cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
+            >
+              {tag.name}
+            </button>
           ))}
         </div>
       )}
+    </div>
     
     <!-- Links Section -->
     <section class="mt-12 px-4">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Links</h2>
-      
       <div class="grid grid-cols-1 gap-4 max-w-2xl mx-auto">
         {profile.links.filter(link => !link.hidden).map(link => (
           <LinkCard link={link} />
         ))}
       </div>
-      
       {profile.links.filter(link => link.hidden).map(link => (
         <LinkCard link={link} />
       ))}
@@ -124,16 +123,88 @@ const ogImage = profile.ogImageUrl;
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
         <i class="fas fa-trophy text-[#ff9500] dark:text-[#ff9500] mr-2"></i>Achievements
       </h2>
-      
       <div class="grid grid-cols-1 gap-4 max-w-2xl mx-auto">
         {profile.achievements.filter(achievement => !achievement.hidden).map(achievement => (
           <AchievementCard achievement={achievement} />
         ))}
       </div>
-      
       {profile.achievements.filter(achievement => achievement.hidden).map(achievement => (
         <AchievementCard achievement={achievement} />
       ))}
     </section>
+    
+    <!-- Modal for tag details -->
+    <div id="tag-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg max-w-lg w-full max-h-[80vh] overflow-y-auto">
+        <h3 id="modal-title" class="text-2xl font-bold text-gray-900 dark:text-white"></h3>
+        <p id="modal-description" class="mt-2 text-gray-700 dark:text-gray-300"></p>
+        <div id="modal-citation" class="mt-2"></div>
+        <div id="modal-related-work" class="mt-4"></div>
+        <button id="close-modal" class="mt-4 px-4 py-2 bg-[#9333ea] dark:bg-[#a5fd0e] text-white dark:text-gray-900 rounded hover:bg-[#7e2cc9] dark:hover:bg-[#8de30b] transition-colors">Close</button>
+      </div>
+    </div>
   </div>
+
+  <!-- Client-side script to handle modal -->
+  <script define:vars={{ tags: profile.tags }}>
+    window.profileTags = tags;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('tag-modal');
+      const title = document.getElementById('modal-title');
+      const description = document.getElementById('modal-description');
+      const citationDiv = document.getElementById('modal-citation');
+      const relatedWorkDiv = document.getElementById('modal-related-work');
+      const closeButton = document.getElementById('close-modal');
+
+      function showTagModal(tag) {
+        title.textContent = tag.name;
+        description.textContent = tag.description || 'No description available.';
+        
+        if (tag.citation) {
+          citationDiv.innerHTML = `<a href="${tag.citation.url}" target="_blank" rel="noopener noreferrer" class="text-[#9333ea] dark:text-[#a5fd0e] hover:underline">${tag.citation.title || 'Learn more'}</a>`;
+        } else {
+          citationDiv.innerHTML = '';
+        }
+        
+        if (tag.related_work && tag.related_work.length > 0) {
+          relatedWorkDiv.innerHTML = '<h4 class="text-lg font-medium text-gray-900 dark:text-white">Related Work</h4><ul class="mt-2 space-y-2">' + 
+            tag.related_work.map(work => 
+              `<li><a href="${work.url}" target="_blank" rel="noopener noreferrer" class="text-[#9333ea] dark:text-[#a5fd0e] hover:underline">${work.title}</a>: ${work.description}</li>`
+            ).join('') + '</ul>';
+        } else {
+          relatedWorkDiv.innerHTML = '';
+        }
+        
+        modal.classList.remove('hidden');
+      }
+
+      closeButton.addEventListener('click', () => {
+        modal.classList.add('hidden');
+      });
+
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.add('hidden');
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+          modal.classList.add('hidden');
+        }
+      });
+
+      const tagButtons = document.querySelectorAll('[data-tag-name]');
+      tagButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const tagName = button.getAttribute('data-tag-name');
+          const tag = window.profileTags.find(t => t.name === tagName);
+          if (tag) {
+            showTagModal(tag);
+          }
+        });
+      });
+    });
+  </script>
 </Layout>

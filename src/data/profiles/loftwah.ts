@@ -1,7 +1,9 @@
-import type { Profile } from '../../types';
+import type { Profile, Tag, RelatedWork, Citation } from '../../types';
 import avatarImage from '../../assets/images/loftwah_avatar.jpg';
 import bannerImage from '../../assets/images/loftwah_banner.jpg';
 import ogImage from '../../assets/images/loftwah_og.jpg';
+
+// No interfaces needed - we'll just use the objects directly
 
 export const loftwah: Profile = {
   name: "Dean Lofts",
@@ -14,21 +16,249 @@ export const loftwah: Profile = {
   ogDescription: "Connect with Dean Lofts, a developer, CTO, creator, and tech enthusiast. Explore my projects, content, and social links all in one place.",
   bio: "Creator of Linkarooie, DevOps Engineer. Hit me up on Twitter/X.",
   tags: [
-    "AI/ML",
-    "Astro",
-    "AWS",
-    "Bun",
-    "DevOps",
-    "Docker",
-    "GitHub",
-    "Linux",
-    "Open Source",
-    "Postgres",
-    "Python (uv)",
-    "Ruby",
-    "Ruby on Rails",
-    "Terraform",
-    "TypeScript"
+    {
+      name: "AI/ML",
+      description: "AI refers to the development of systems that mimic human intelligence, while ML, a subset of AI, involves algorithms that enable computers to learn from data and improve over time without explicit programming. Together, they power applications like predictive analytics, natural language processing, and autonomous systems.",
+      citation: {
+        title: "What is Artificial Intelligence?",
+        url: "https://www.ibm.com/topics/artificial-intelligence"
+      },
+      related_work: [
+        {
+          title: "Build a Powerful Product Catalog Explorer with LangChain, Ollama, and Gradio",
+          url: "https://blog.deanlofts.xyz/blog/rag-product-catalog/",
+          description: "A guide on building a product catalog explorer using AI technologies."
+        },
+        {
+          title: "Auto Jira",
+          url: "https://github.com/loftwah/auto-jira",
+          description: "Automation tool for Jira using AI/ML techniques."
+        },
+        {
+          title: "Unlocking the Power of GGUF Models Locally with Ollama",
+          url: "https://blog.deanlofts.xyz/blog/ollama/",
+          description: "Tutorial on working with local language models."
+        },
+        {
+          title: "English-Chinese Translator for Markdown",
+          url: "https://github.com/loftwah/eng-cn-translate",
+          description: "A tool to translate between English and Simplified Chinese for Markdown."
+        },
+        {
+          title: "Fantasy Basketball Tools",
+          url: "https://github.com/loftwah/langchain-csv/tree/main/nba",
+          description: "Tools for fantasy basketball analysis using language models."
+        }
+      ]
+    },
+    {
+      name: "Astro",
+      description: "Astro is an open-source web framework designed for building fast, content-driven websites. It emphasizes performance by defaulting to static site generation, supports modern JavaScript, and allows developers to use their preferred UI frameworks like React or Vue with a minimal client-side runtime.",
+      citation: {
+        title: "Astro: Build Faster Websites",
+        url: "https://astro.build/"
+      },
+      related_work: [
+        {
+          title: "Linkarooie",
+          url: "https://linkarooie.com/",
+          description: "A link sharing platform built with Astro."
+        },
+        {
+          title: "My Blog",
+          url: "https://blog.deanlofts.xyz/",
+          description: "Personal blog built with Astro framework."
+        }
+      ]
+    },
+    {
+      name: "AWS",
+      description: "AWS is a comprehensive cloud computing platform offering services like computing power (EC2), storage (S3), databases (RDS), and machine learning tools. It enables scalable, cost-effective infrastructure management for businesses and developers worldwide.",
+      citation: {
+        title: "What is AWS?",
+        url: "https://aws.amazon.com/what-is-aws/"
+      },
+      related_work: [
+        {
+          title: "Loftwah's Guide to Managing Terraform for AWS ECS Fargate Deployments with HTTPS",
+          url: "https://blog.deanlofts.xyz/guides/managing-terraform-ecs/",
+          description: "A comprehensive guide for AWS ECS Fargate deployments using Terraform."
+        }
+      ]
+    },
+    {
+      name: "Bun",
+      description: "Bun is a fast, all-in-one JavaScript runtime and toolkit designed as an alternative to Node.js. It offers built-in support for TypeScript, JSX, and a package manager, aiming to simplify and accelerate web development workflows.",
+      citation: {
+        title: "Bun: A Fast JavaScript Runtime",
+        url: "https://bun.sh/"
+      },
+      related_work: [
+        {
+          title: "Ahoy! Set Sail with TypeScript and Bun: A Pirate's Guide for 2024",
+          url: "https://blog.deanlofts.xyz/guides/typescript-getting-started/",
+          description: "A guide to getting started with TypeScript and Bun in 2024."
+        }
+      ]
+    },
+    {
+      name: "DevOps",
+      description: "DevOps is a set of practices combining software development (Dev) and IT operations (Ops) to shorten development cycles, increase deployment frequency, and improve collaboration. It leverages automation tools and cultural philosophies like CI/CD to enhance software delivery.",
+      citation: {
+        title: "What is DevOps?",
+        url: "https://aws.amazon.com/devops/what-is-devops/"
+      },
+      related_work: [
+        {
+          title: "Deploying FastAPI with UV, Nginx, and AWS ECS: A Step-by-Step Guide",
+          url: "https://blog.deanlofts.xyz/guides/uv-fastapi-ecs/",
+          description: "A comprehensive guide for deploying FastAPI applications using DevOps practices."
+        }
+      ]
+    },
+    {
+      name: "Docker",
+      description: "Docker is an open-source platform that automates the deployment of applications inside lightweight, portable containers. These containers package code and dependencies together, ensuring consistency across development, testing, and production environments.",
+      citation: {
+        title: "What is Docker?",
+        url: "https://www.docker.com/what-is-docker/"
+      },
+      related_work: [
+        {
+          title: "Mastering UV with Python and Docker: A Comprehensive Guide to Modern Python Development",
+          url: "https://blog.deanlofts.xyz/guides/uv-python-docker/",
+          description: "A guide for Python development with Docker and UV."
+        }
+      ]
+    },
+    {
+      name: "GitHub",
+      description: "GitHub is a platform for version control and collaborative software development using Git. It hosts repositories, facilitates code reviews via pull requests, and provides tools like GitHub Actions for CI/CD automation, serving millions of developers globally.",
+      citation: {
+        title: "About GitHub",
+        url: "https://github.com/about"
+      },
+      related_work: [
+        {
+          title: "My GitHub profile",
+          url: "https://github.com/loftwah",
+          description: "Dean Lofts' GitHub profile with various open source projects."
+        }
+      ]
+    },
+    {
+      name: "Linux",
+      description: "Linux is an open-source, Unix-like operating system kernel that powers a wide range of devices, from servers to smartphones. Known for its stability, security, and flexibility, it's a cornerstone of modern computing and DevOps workflows.",
+      citation: {
+        title: "What is Linux?",
+        url: "https://www.linux.org/pages/what-is-linux/"
+      },
+      related_work: [
+        {
+          title: "Linux for Pirates!",
+          url: "https://loftwah.github.io/linux-for-pirates/",
+          description: "A fun and comprehensive guide to learning Linux."
+        }
+      ]
+    },
+    {
+      name: "Open Source",
+      description: "Open source refers to software with publicly available source code that anyone can inspect, modify, and distribute. It fosters collaboration, transparency, and innovation, driving projects like Linux, Docker, and many frameworks.",
+      citation: {
+        title: "About Open Source",
+        url: "https://opensource.org/about"
+      },
+      related_work: [
+        {
+          title: "BioDrop: A Fresh Start for the Open Source Project Formerly Known as LinkFree",
+          url: "https://loftwah.medium.com/biodrop-a-fresh-start-for-the-open-source-project-formerly-known-as-linkfree-a47d4bdf8c56",
+          description: "An article about the evolution of an open source project."
+        }
+      ]
+    },
+    {
+      name: "Postgres",
+      description: "PostgreSQL is a powerful, open-source relational database management system known for its robustness, extensibility, and standards compliance. It supports advanced data types and is widely used in web applications and data-driven systems.",
+      citation: {
+        title: "About PostgreSQL",
+        url: "https://www.postgresql.org/about/"
+      }
+    },
+    {
+      name: "Python (uv)",
+      description: "Python is a versatile, high-level programming language known for its readability and extensive libraries. \"uv\" refers to a modern, ultrafast Python package manager and resolver (introduced by Astral in 2024), enhancing dependency management and build performance.",
+      citation: {
+        title: "uv: Python Package Management",
+        url: "https://astral.sh/uv"
+      },
+      related_work: [
+        {
+          title: "Deploying FastAPI with UV, Nginx, and AWS ECS: A Step-by-Step Guide",
+          url: "https://blog.deanlofts.xyz/guides/uv-fastapi-ecs/",
+          description: "A comprehensive guide for deploying Python applications with UV."
+        }
+      ]
+    },
+    {
+      name: "Ruby",
+      description: "Ruby is an open-source, dynamic programming language focused on simplicity and productivity. Its elegant syntax and object-oriented design make it popular for web development, especially via the Ruby on Rails framework.",
+      citation: {
+        title: "About Ruby",
+        url: "https://www.ruby-lang.org/en/about/"
+      },
+      related_work: [
+        {
+          title: "Linkarooie (original)",
+          url: "https://github.com/loftwah/linkarooie",
+          description: "The original version of Linkarooie built with Ruby."
+        }
+      ]
+    },
+    {
+      name: "Ruby on Rails",
+      description: "Ruby on Rails (often just \"Rails\") is an open-source web application framework written in Ruby. It follows the MVC (Model-View-Controller) pattern, emphasizing convention over configuration and rapid development for building scalable web apps.",
+      citation: {
+        title: "Ruby on Rails: A Web Framework",
+        url: "https://rubyonrails.org/"
+      },
+      related_work: [
+        {
+          title: "Linux for Pirates! 2 Ruby on Whales",
+          url: "https://loftwah-demo.github.io/linux-for-pirates-2/",
+          description: "A guide for using Ruby on Rails with Docker."
+        }
+      ]
+    },
+    {
+      name: "Terraform",
+      description: "Terraform is an open-source Infrastructure as Code (IaC) tool by HashiCorp that allows users to define and manage cloud infrastructure using declarative configuration files. It supports multiple providers like AWS, Azure, and Google Cloud.",
+      citation: {
+        title: "Introduction to Terraform",
+        url: "https://www.terraform.io/intro"
+      },
+      related_work: [
+        {
+          title: "A demo repo of using UV and FastAPI with Docker on AWS ECS",
+          url: "https://github.com/loftwah/uv-fastapi-ecs",
+          description: "Repository demonstrating Terraform infrastructure for deploying FastAPI applications."
+        }
+      ]
+    },
+    {
+      name: "TypeScript",
+      description: "TypeScript is an open-source superset of JavaScript that adds static typing to enhance code reliability and scalability. Widely adopted in modern web development, it compiles to plain JavaScript and integrates seamlessly with frameworks like React.",
+      citation: {
+        title: "TypeScript: JavaScript with Syntax for Types",
+        url: "https://www.typescriptlang.org/"
+      },
+      related_work: [
+        {
+          title: "🏴‍☠️ Buccaneer's Training Manual: TypeScript & Bun Exercises",
+          url: "https://blog.deanlofts.xyz/guides/typescript-exercises/",
+          description: "A collection of exercises for learning TypeScript with Bun."
+        }
+      ]
+    }
   ],
   isPublic: true,
   showInDirectory: true,
