@@ -18,6 +18,7 @@ const { profile } = Astro.props;
       class="w-full h-full object-cover"
       width={300}
       height={300}
+      quality={85}
     />
   </div>
   <div class="p-4">
@@ -29,7 +30,7 @@ const { profile } = Astro.props;
     {profile.tags.length > 0 && (
       <div class="mt-3 flex flex-wrap gap-1.5">
         {profile.tags.slice(0, 3).map(tag => (
-          <span class="px-2 py-0.5 bg-gray-200 dark:bg-[#2a3b0f] text-[#9333ea] dark:text-[#a5fd0e] text-xs rounded-full whitespace-nowrap">
+          <span class="px-2 py-0.5 bg-gray-200 dark:bg-gray-700 text-[#9333ea] dark:text-[#a5fd0e] text-xs rounded-full whitespace-nowrap">
             {tag.name}
           </span>
         ))}

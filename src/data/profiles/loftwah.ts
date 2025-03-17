@@ -18,7 +18,7 @@ export const loftwah: Profile = {
   tags: [
     {
       name: "AI/ML",
-      description: "AI refers to the development of systems that mimic human intelligence, while ML, a subset of AI, involves algorithms that enable computers to learn from data and improve over time without explicit programming. Together, they power applications like predictive analytics, natural language processing, and autonomous systems.",
+      description: "AI systems mimic human intelligence, while Machine Learning enables computers to learn from data without explicit programming. Together, they power predictive analytics, NLP, and autonomous systems.",
       citation: {
         title: "What is Artificial Intelligence?",
         url: "https://www.ibm.com/topics/artificial-intelligence"
