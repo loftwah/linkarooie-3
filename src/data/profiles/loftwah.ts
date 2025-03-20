@@ -48,6 +48,11 @@ export const loftwah: Profile = {
           title: "Fantasy Basketball Tools",
           url: "https://github.com/loftwah/langchain-csv/tree/main/nba",
           description: "Tools for fantasy basketball analysis using language models."
+        },
+        {
+          title: "Hoops Hustler",
+          url: "https://github.com/loftwah/hoops-hustler",
+          description: "A comprehensive NBA team comparison tool built with real-time stats from the NBA API and AI-generated insights, powered by Streamlit."
         }
       ]
     },
@@ -68,6 +73,11 @@ export const loftwah: Profile = {
           title: "My Blog",
           url: "https://blog.deanlofts.xyz/",
           description: "Personal blog built with Astro framework."
+        },
+        {
+          title: "Building an Astro 5 App with Cloudflare Pages and D1",
+          url: "https://blog.deanlofts.xyz/guides/astro-cloudflare/",
+          description: "A guide on building an Astro 5 app with Cloudflare Pages and D1."
         }
       ]
     },
