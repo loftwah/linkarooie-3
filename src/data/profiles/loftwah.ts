@@ -189,7 +189,7 @@ export const loftwah: Profile = {
       related_work: [
         {
           title: "Linux for Pirates! 2 Ruby on Whales",
-          url: "https://loftwah-demo.github.io/linux-for-pirates-2/",
+          url: "https://linuxforpirates.deanlofts.xyz/ruby-on-whales/",
           description: "A guide for using Ruby on Rails with Docker."
         }
       ]
