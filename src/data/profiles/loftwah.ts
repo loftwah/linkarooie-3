@@ -242,6 +242,13 @@ export const loftwah: Profile = {
       icon: "fa-solid fa-blog"
     },
     {
+      id: "lfp",
+      title: "Linux for Pirates! 1 & 2",
+      description: "The home of my Linux for Pirates! and Ruby on Whales.",
+      url: "https://linuxforpirates.deanlofts.xyz",
+      icon: "fa-solid fa-terminal"
+    },
+    {
       id: "beats",
       title: "Loftwah The Beatsmiff Beats",
       description: "Lots of beats I have made over the years.",
