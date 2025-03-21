@@ -4,25 +4,83 @@ import { existsSync } from 'fs';
 import { Resvg } from '@resvg/resvg-js';
 import satori from 'satori';
 import { loftwah } from '../src/data/profiles/loftwah'; // Import your real profile
+import type { ImageMetadata } from 'astro';
 
+// Define types for our script
+interface Citation {
+  title?: string;
+  url: string;
+}
+
+interface RelatedWork {
+  title: string;
+  url: string;
+  description: string;
+}
+
+interface Tag {
+  name: string;
+  description?: string;
+  citation?: Citation;
+  related_work?: RelatedWork[];
+}
+
+interface Profile {
+  name: string;
+  username: string;
+  description: string;
+  bio: string;
+  tags: Tag[];
+  avatarUrl: string | ImageMetadata;
+  ogImageUrl: string | ImageMetadata;
+  // Other properties exist but not used in this script
+}
+
+interface ThemeColors {
+  background: string;
+  text: string;
+  accent: string;
+  secondaryText: string;
+  headerText: string;
+  tagBackground: string;
+  tagText: string;
+  gradientStart: string;
+  gradientEnd: string;
+}
+
+interface ThemeOptions {
+  theme?: 'dark' | 'light';
+}
+
+interface Font {
+  name: string;
+  data: ArrayBuffer;
+  weight: number;
+  style: 'normal';
+}
+
+// @ts-ignore - Bun types may not be available in regular TypeScript
 // Load fonts with Bun
-async function loadFont(name, weight, path) {
+async function loadFont(name: string, weight: number, path: string): Promise<Font> {
+  // @ts-ignore - Using Bun API
   const fontFile = Bun.file(path);
+  // @ts-ignore - Using Bun API
   if (!(await fontFile.exists())) {
     throw new Error(`Font file not found at: ${path}`);
   }
+  // @ts-ignore - Using Bun API
   const fontData = await fontFile.arrayBuffer();
   return { name, data: fontData, weight, style: 'normal' };
 }
 
 // Generate the OG image
-async function generateOGImage(profile, options = {}) {
+async function generateOGImage(profile: Profile, options: ThemeOptions = {}): Promise<Buffer> {
   // Default theme settings
   const theme = options.theme || 'dark';
   const isDarkTheme = theme === 'dark';
   
   // Theme colors
-  const colors = {
+  const colors: Record<'dark' | 'light', ThemeColors> = {
     dark: {
       background: '#1b1d2d',
       text: 'white',
@@ -50,22 +108,27 @@ async function generateOGImage(profile, options = {}) {
   // Set current theme colors
   const currentTheme = colors[isDarkTheme ? 'dark' : 'light'];
   // Load avatar and convert to data URL
+  // @ts-ignore - Using Bun API
   const imageFile = Bun.file(profile.avatarUrl);
+  // @ts-ignore - Using Bun API
   if (!(await imageFile.exists())) {
     throw new Error(`Avatar file not found at: ${profile.avatarUrl}`);
   }
+  // @ts-ignore - Using Bun API
   const imageBuffer = await imageFile.arrayBuffer();
   const base64 = Buffer.from(imageBuffer).toString('base64');
-  const mimeType = profile.avatarUrl.endsWith('.png') ? 'image/png' : 'image/jpeg';
+  const mimeType = profile.avatarUrl.toString().endsWith('.png') ? 'image/png' : 'image/jpeg';
   const avatarDataUrl = `data:${mimeType};base64,${base64}`;
   console.log('Avatar loaded successfully');
 
   // Load fonts
   const fontPathRegular = './public/fonts/Inter-Regular.ttf';
   const fontPathBold = './public/fonts/Inter-Bold.ttf';
+  // @ts-ignore - Using Bun API
   if (!await Bun.file(fontPathRegular).exists()) {
     throw new Error(`Font file not found: ${fontPathRegular}`);
   }
+  // @ts-ignore - Using Bun API
   if (!await Bun.file(fontPathBold).exists()) {
     throw new Error(`Font file not found: ${fontPathBold}`);
   }
@@ -75,7 +138,8 @@ async function generateOGImage(profile, options = {}) {
   console.log('Fonts loaded successfully');
 
   // Take up to 16 tags instead of 8 to display in two rows if available
-  const tagsToDisplay = profile.tags.slice(0, 16);
+  // Extract tag names from Tag objects
+  const tagsToDisplay = profile.tags.slice(0, 16).map(tag => tag.name);
   
   // Generate SVG with Satori
   const svg = await satori(
@@ -225,7 +289,7 @@ async function generateOGImage(profile, options = {}) {
                             gap: '12px',
                             width: '100%',
                           },
-                          children: tagsToDisplay.map((tag) => ({
+                          children: tagsToDisplay.map((tagName: string) => ({
                             type: 'div',
                             props: {
                               style: {
@@ -238,7 +302,7 @@ async function generateOGImage(profile, options = {}) {
                                 fontWeight: 500,
                                 marginBottom: '6px',
                               },
-                              children: tag,
+                              children: tagName,
                             },
                           })),
                         },
@@ -293,6 +357,7 @@ async function generateOGImage(profile, options = {}) {
         ],
       },
     },
+    // @ts-ignore - Adding type ignore to avoid issues with font format
     { width: 1200, height: 630, fonts }
   );
 
@@ -308,19 +373,21 @@ async function generateOGImage(profile, options = {}) {
 async function main() {
   try {
     console.log('Generating OG image...');
-    const profile = loftwah; // Use the imported profile directly
+    const profile = loftwah; // The imported profile should match our Profile interface
     
     // Check if theme parameter was passed via command line
     const args = process.argv.slice(2);
     const themeArg = args.find(arg => arg.startsWith('--theme='));
-    const theme = themeArg ? themeArg.split('=')[1] : 'dark';
+    const theme = themeArg ? themeArg.split('=')[1] as 'dark' | 'light' : 'dark';
     
     console.log(`Generating OG image with ${theme} theme...`);
     const imageBuffer = await generateOGImage(profile, { theme });
 
+    // @ts-ignore - ogImageUrl is a string at runtime
     const outputDir = dirname(profile.ogImageUrl);
     if (!existsSync(outputDir)) await mkdir(outputDir, { recursive: true });
 
+    // @ts-ignore - ogImageUrl is a string at runtime
     await writeFile(profile.ogImageUrl, imageBuffer);
     console.log(`OG image saved to ${profile.ogImageUrl}`);
   } catch (error) {
