@@ -249,6 +249,13 @@ export const loftwah: Profile = {
       icon: "fa-solid fa-terminal"
     },
     {
+      id: "downscope",
+      title: "Downscope",
+      description: "A fictional story I wrote about a hectic couple of days at a SaaS company.",
+      url: "https://downscope.deanlofts.xyz",
+      icon: "fa-solid fa-book"
+    },
+    {
       id: "beats",
       title: "Loftwah The Beatsmiff Beats",
       description: "Lots of beats I have made over the years.",
