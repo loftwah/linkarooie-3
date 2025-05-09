@@ -8,7 +8,7 @@ import ogImage from '../../assets/images/loftwah_og.jpg';
 export const loftwah: Profile = {
   name: "Dean Lofts",
   username: "loftwah",
-  description: "Only the vibe coder remains.",
+  description: "I like computers.",
   avatarUrl: avatarImage,
   bannerUrl: bannerImage,
   ogImageUrl: ogImage,
