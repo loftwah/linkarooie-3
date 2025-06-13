@@ -249,6 +249,13 @@ export const loftwah: Profile = {
       icon: "fa-solid fa-terminal"
     },
     {
+      id: "techdeck",
+      title: "TechDeck",
+      description: "AI-powered collectible trading cards for Tech Twitter/X profiles",
+      url: "https://techdeck.life",
+      icon: "fa-solid fa-id-card"
+    },
+    {
       id: "downscope",
       title: "Downscope",
       description: "A fictional story I wrote about a hectic couple of days at a SaaS company.",
