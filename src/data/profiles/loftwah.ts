@@ -8,57 +8,63 @@ import ogImage from '../../assets/images/loftwah_og.jpg';
 export const loftwah: Profile = {
   name: "Dean Lofts",
   username: "loftwah",
-  description: "I like computers.",
+  description: "I like building things and making them work.",
   avatarUrl: avatarImage,
   bannerUrl: bannerImage,
   ogImageUrl: ogImage,
   ogTitle: "Dean Lofts (Loftwah) - Single Dad and Senior DevOps Engineer",
-  ogDescription: "Connect with Dean Lofts, a developer, CTO, creator, and tech enthusiast. Explore my projects, content, and social links all in one place.",
-  bio: "Creator of Linkarooie, DevOps Engineer. Hit me up on Twitter/X.",
+  ogDescription:
+    "I create, ship, and connect ideas. DevOps engineer, product builder, and music maker. All my projects and links in one place.",
+  bio:
+    "Creator of Linkarooie, Senior DevOps Engineer, and part-time beat maker. Always building, always learning.",
   tags: [
     {
       name: "AI/ML",
-      description: "AI systems mimic human intelligence, while Machine Learning enables computers to learn from data without explicit programming. Together, they power predictive analytics, NLP, and autonomous systems.",
+      description:
+        "Using AI to build tools, solve problems, and automate boring stuff. ML helps the models get better by learning from data.",
       citation: {
         title: "What is Artificial Intelligence?",
         url: "https://www.ibm.com/topics/artificial-intelligence"
       },
       related_work: [
         {
-          title: "Build a Powerful Product Catalog Explorer with LangChain, Ollama, and Gradio",
+          title:
+            "Build a Powerful Product Catalog Explorer with LangChain, Ollama, and Gradio",
           url: "https://blog.deanlofts.xyz/blog/rag-product-catalog/",
-          description: "A guide on building a product catalog explorer using AI technologies."
+          description: "A product catalog explorer powered by AI search and RAG."
         },
         {
           title: "Auto Jira",
           url: "https://github.com/loftwah/auto-jira",
-          description: "Automation tool for Jira using AI/ML techniques."
+          description: "Automating Jira tasks with AI helpers."
         },
         {
           title: "Unlocking the Power of GGUF Models Locally with Ollama",
           url: "https://blog.deanlofts.xyz/blog/ollama/",
-          description: "Tutorial on working with local language models."
+          description: "Run local language models with Ollama and GGUF."
         },
         {
           title: "English-Chinese Translator for Markdown",
           url: "https://github.com/loftwah/eng-cn-translate",
-          description: "A tool to translate between English and Simplified Chinese for Markdown."
+          description: "Translate Markdown between English and Simplified Chinese."
         },
         {
           title: "Fantasy Basketball Tools",
           url: "https://github.com/loftwah/langchain-csv/tree/main/nba",
-          description: "Tools for fantasy basketball analysis using language models."
+          description: "AI assisted fantasy basketball analysis."
         },
         {
           title: "Hoops Hustler",
           url: "https://github.com/loftwah/hoops-hustler",
-          description: "A comprehensive NBA team comparison tool built with real-time stats from the NBA API and AI-generated insights, powered by Streamlit."
+          description:
+            "NBA team comparison with live stats and AI generated insights."
         }
       ]
     },
     {
       name: "Astro",
-      description: "Astro is an open-source web framework designed for building fast, content-driven websites. It emphasizes performance by defaulting to static site generation, supports modern JavaScript, and allows developers to use their preferred UI frameworks like React or Vue with a minimal client-side runtime.",
+      description:
+        "Fast sites with minimal client JavaScript. Great for content and works well with React or Vue when needed.",
       citation: {
         title: "Astro: Build Faster Websites",
         url: "https://astro.build/"
@@ -67,68 +73,75 @@ export const loftwah: Profile = {
         {
           title: "Linkarooie",
           url: "https://linkarooie.com/",
-          description: "A link sharing platform built with Astro."
+          description: "Open source link in bio built with Astro."
         },
         {
           title: "My Blog",
           url: "https://blog.deanlofts.xyz/",
-          description: "Personal blog built with Astro framework."
+          description: "Personal blog powered by Astro."
         },
         {
           title: "Building an Astro 5 App with Cloudflare Pages and D1",
           url: "https://blog.deanlofts.xyz/guides/astro-cloudflare/",
-          description: "A guide on building an Astro 5 app with Cloudflare Pages and D1."
+          description: "Guide to shipping Astro on Cloudflare Pages with D1."
         }
       ]
     },
     {
       name: "AWS",
-      description: "AWS is a comprehensive cloud computing platform offering services like computing power (EC2), storage (S3), databases (RDS), and machine learning tools. It enables scalable, cost-effective infrastructure management for businesses and developers worldwide.",
+      description:
+        "My main cloud for hosting, scaling, storage, and data. I use it to run apps, queues, and automation at scale.",
       citation: {
         title: "What is AWS?",
         url: "https://aws.amazon.com/what-is-aws/"
       },
       related_work: [
         {
-          title: "Loftwah's Guide to Managing Terraform for AWS ECS Fargate Deployments with HTTPS",
+          title:
+            "Loftwah's Guide to Managing Terraform for AWS ECS Fargate Deployments with HTTPS",
           url: "https://blog.deanlofts.xyz/guides/managing-terraform-ecs/",
-          description: "A comprehensive guide for AWS ECS Fargate deployments using Terraform."
+          description: "My process for deploying to ECS with Terraform and HTTPS."
         }
       ]
     },
     {
       name: "DevOps",
-      description: "DevOps is a set of practices combining software development (Dev) and IT operations (Ops) to shorten development cycles, increase deployment frequency, and improve collaboration. It leverages automation tools and cultural philosophies like CI/CD to enhance software delivery.",
+      description:
+        "Build, test, ship, and observe. I automate releases and keep systems reliable so teams can move faster.",
       citation: {
         title: "What is DevOps?",
         url: "https://aws.amazon.com/devops/what-is-devops/"
       },
       related_work: [
         {
-          title: "Deploying FastAPI with UV, Nginx, and AWS ECS: A Step-by-Step Guide",
+          title:
+            "Deploying FastAPI with UV, Nginx, and AWS ECS: A Step-by-Step Guide",
           url: "https://blog.deanlofts.xyz/guides/uv-fastapi-ecs/",
-          description: "A comprehensive guide for deploying FastAPI applications using DevOps practices."
+          description: "Deploying Python apps on AWS with a clean pipeline."
         }
       ]
     },
     {
       name: "Docker",
-      description: "Docker is an open-source platform that automates the deployment of applications inside lightweight, portable containers. These containers package code and dependencies together, ensuring consistency across development, testing, and production environments.",
+      description:
+        "Portable containers so apps run the same everywhere. My default for local dev and production services.",
       citation: {
         title: "What is Docker?",
         url: "https://www.docker.com/what-is-docker/"
       },
       related_work: [
         {
-          title: "Mastering UV with Python and Docker: A Comprehensive Guide to Modern Python Development",
+          title:
+            "Mastering UV with Python and Docker: A Comprehensive Guide to Modern Python Development",
           url: "https://blog.deanlofts.xyz/guides/uv-python-docker/",
-          description: "A guide for Python development with Docker and UV."
+          description: "Modern Python workflow with Docker and UV."
         }
       ]
     },
     {
       name: "GitHub",
-      description: "GitHub is a platform for version control and collaborative software development using Git. It hosts repositories, facilitates code reviews via pull requests, and provides tools like GitHub Actions for CI/CD automation, serving millions of developers globally.",
+      description:
+        "Code, issues, pull requests, and automation with Actions. Home base for my open source work.",
       citation: {
         title: "About GitHub",
         url: "https://github.com/about"
@@ -137,13 +150,14 @@ export const loftwah: Profile = {
         {
           title: "My GitHub profile",
           url: "https://github.com/loftwah",
-          description: "Dean Lofts' GitHub profile with various open source projects."
+          description: "All my repos in one place."
         }
       ]
     },
     {
       name: "Linux",
-      description: "Linux is an open-source, Unix-like operating system kernel that powers a wide range of devices, from servers to smartphones. Known for its stability, security, and flexibility, it's a cornerstone of modern computing and DevOps workflows.",
+      description:
+        "Daily driver for development and servers. Stable, secure, and customizable.",
       citation: {
         title: "What is Linux?",
         url: "https://www.linux.org/pages/what-is-linux/"
@@ -152,13 +166,14 @@ export const loftwah: Profile = {
         {
           title: "Linux for Pirates!",
           url: "https://loftwah.github.io/linux-for-pirates/",
-          description: "A fun and comprehensive guide to learning Linux."
+          description: "A fun way to learn Linux basics and beyond."
         }
       ]
     },
     {
       name: "Postgres",
-      description: "PostgreSQL is a powerful, open-source relational database management system known for its robustness, extensibility, and standards compliance. It supports advanced data types and is widely used in web applications and data-driven systems.",
+      description:
+        "Solid relational database with great performance and features. My default choice for app data.",
       citation: {
         title: "About PostgreSQL",
         url: "https://www.postgresql.org/about/"
@@ -166,22 +181,25 @@ export const loftwah: Profile = {
     },
     {
       name: "Python (uv)",
-      description: "Python is a versatile, high-level programming language known for its readability and extensive libraries. \"uv\" refers to a modern, ultrafast Python package manager and resolver (introduced by Astral in 2024), enhancing dependency management and build performance.",
+      description:
+        "Python for scripts and backends. UV is a fast package manager that speeds up installs and builds.",
       citation: {
         title: "uv: Python Package Management",
         url: "https://astral.sh/uv"
       },
       related_work: [
         {
-          title: "Deploying FastAPI with UV, Nginx, and AWS ECS: A Step-by-Step Guide",
+          title:
+            "Deploying FastAPI with UV, Nginx, and AWS ECS: A Step-by-Step Guide",
           url: "https://blog.deanlofts.xyz/guides/uv-fastapi-ecs/",
-          description: "A comprehensive guide for deploying Python applications with UV."
+          description: "Using UV to speed up Python deployments."
         }
       ]
     },
     {
       name: "Ruby on Rails",
-      description: "Ruby on Rails (often just \"Rails\") is an open-source web application framework written in Ruby. It follows the MVC (Model-View-Controller) pattern, emphasizing convention over configuration and rapid development for building scalable web apps.",
+      description:
+        "Framework that lets me build features fast. Strong conventions and a clean ecosystem.",
       citation: {
         title: "Ruby on Rails: A Web Framework",
         url: "https://rubyonrails.org/"
@@ -190,37 +208,41 @@ export const loftwah: Profile = {
         {
           title: "Linux for Pirates! 2 Ruby on Whales",
           url: "https://linuxforpirates.deanlofts.xyz/ruby-on-whales/",
-          description: "A guide for using Ruby on Rails with Docker."
+          description: "Running Rails with Docker in a simple setup."
         }
       ]
     },
     {
       name: "Terraform",
-      description: "Terraform is an open-source Infrastructure as Code (IaC) tool by HashiCorp that allows users to define and manage cloud infrastructure using declarative configuration files. It supports multiple providers like AWS, Azure, and Google Cloud.",
+      description:
+        "Infrastructure as code so cloud resources live in version control and are easy to repeat.",
       citation: {
         title: "Introduction to Terraform",
         url: "https://www.terraform.io/intro"
       },
       related_work: [
         {
-          title: "A demo repo of using UV and FastAPI with Docker on AWS ECS",
+          title:
+            "A demo repo of using UV and FastAPI with Docker on AWS ECS",
           url: "https://github.com/loftwah/uv-fastapi-ecs",
-          description: "Repository demonstrating Terraform infrastructure for deploying FastAPI applications."
+          description: "Example Terraform for a FastAPI app on AWS."
         }
       ]
     },
     {
       name: "TypeScript",
-      description: "TypeScript is an open-source superset of JavaScript that adds static typing to enhance code reliability and scalability. Widely adopted in modern web development, it compiles to plain JavaScript and integrates seamlessly with frameworks like React.",
+      description:
+        "JavaScript with types. Safer refactors and better tooling for bigger projects.",
       citation: {
         title: "TypeScript: JavaScript with Syntax for Types",
         url: "https://www.typescriptlang.org/"
       },
       related_work: [
         {
-          title: "🏴‍☠️ Buccaneer's Training Manual: TypeScript & Bun Exercises",
+          title:
+            "🏴‍☠️ Buccaneer's Training Manual: TypeScript & Bun Exercises",
           url: "https://blog.deanlofts.xyz/guides/typescript-exercises/",
-          description: "A collection of exercises for learning TypeScript with Bun."
+          description: "Hands on TypeScript practice using Bun."
         }
       ]
     }
@@ -237,42 +259,44 @@ export const loftwah: Profile = {
     {
       id: "blog",
       title: "My Blog",
-      description: "My blog where I write about stuff.",
+      description: "Posts, guides, and notes on what I am building.",
       url: "https://blog.deanlofts.xyz",
       icon: "fa-solid fa-blog"
     },
     {
       id: "lfp",
       title: "Linux for Pirates! 1 & 2",
-      description: "The home of my Linux for Pirates! and Ruby on Whales.",
+      description: "Home of Linux for Pirates and Ruby on Whales.",
       url: "https://linuxforpirates.deanlofts.xyz",
       icon: "fa-solid fa-terminal"
     },
     {
       id: "techdeck",
       title: "TechDeck",
-      description: "AI-powered collectible trading cards for Tech Twitter/X profiles",
+      description:
+        "AI generated trading cards for tech profiles with stats and moves.",
       url: "https://techdeck.life",
       icon: "fa-solid fa-id-card"
     },
     {
       id: "downscope",
       title: "Downscope",
-      description: "A fictional story I wrote about a hectic couple of days at a SaaS company.",
+      description:
+        "A short story about a chaotic couple of days at a SaaS company.",
       url: "https://downscope.deanlofts.xyz",
       icon: "fa-solid fa-book"
     },
     {
       id: "beats",
       title: "Loftwah The Beatsmiff Beats",
-      description: "Lots of beats I have made over the years.",
+      description: "A big playlist of beats I have made over the years.",
       url: "https://www.youtube.com/playlist?list=PLKBAUoCO_FtlACntcZqTOD4hckJ8IAWZ3",
       icon: "fa-solid fa-music"
     },
     {
       id: "produced",
       title: "Produced by Loftwah The Beatsmiff",
-      description: "A bunch of music that I produced.",
+      description: "Music I produced for other artists and projects.",
       url: "https://www.youtube.com/playlist?list=PLKBAUoCO_FtkHiwRzyGzfhauIhNMBFw66",
       icon: "fa-solid fa-music"
     },
@@ -280,7 +304,7 @@ export const loftwah: Profile = {
       id: "loftwahfm",
       title: "LoftwahFM",
       description:
-        "My AI-powered music hub. Original beats, remixes, playlists, and experiments blending human creativity with AI — all in one place.",
+        "My music hub. Originals, remixes, playlists, and AI experiments in one place.",
       url: "https://fm.loftwah.com",
       icon: "fa-solid fa-headphones"
     },
@@ -288,7 +312,7 @@ export const loftwah: Profile = {
       id: "grabit",
       title: "GRABIT.SH",
       description:
-        "A powerful CLI tool for gathering and summarising key information from Git repositories, enhancing developer productivity through automation and streamlined analysis.",
+        "CLI that pulls key info from repos so you can summarise and prompt faster.",
       url: "https://grabit.sh",
       icon: "fa-solid fa-magnifying-glass"
     },
@@ -296,21 +320,21 @@ export const loftwah: Profile = {
       id: "must-haves",
       title: "Must haves in DevOps and the road to AI",
       description:
-        "A curated list of must-have DevOps tools, practices, and AI-driven innovations that streamline development, enhance automation, and optimise system reliability.",
+        "My running list of tools, practices, and AI ideas for modern DevOps.",
       url: "https://www.makethelist.io/d/devops-must-haves",
       icon: "fa-solid fa-list"
     },
     {
       id: "linux-pirates",
       title: "Linux for Pirates! My daily.dev squad",
-      description: "A squad where we learn Linux as Pirates! on daily.dev",
+      description: "Join the squad and learn Linux together on daily.dev.",
       url: "https://dly.to/3R9tSuu9oHB",
       icon: "fa-solid fa-code"
     },
     {
       id: "bogan-hustler",
       title: "Bogan Hustler",
-      description: "A remake of Dope Wars but Straya",
+      description: "Dope Wars reimagined for Straya.",
       url: "https://boganhustler.deanlofts.xyz",
       icon: "fa-solid fa-people-robbery"
     },
@@ -319,7 +343,7 @@ export const loftwah: Profile = {
       id: "cv",
       title: "My CV/Resume",
       description:
-        "A detailed overview of my professional experience, skills, and accomplishments.",
+        "Full work history, skills, and achievements.",
       url: "https://gist.github.com/loftwah/43d0d27be586ebe2c95df99657121a8b",
       icon: "fa-solid fa-file-alt",
       hidden: true
@@ -328,7 +352,7 @@ export const loftwah: Profile = {
       id: "wikipedia",
       title: "I'm in Wikipedia lol",
       description:
-        "One day at work, I received an unexpected call from an unknown number, which turned out to be the Liberal Democratic Party of Western Australia. They offered me the opportunity to run as their candidate in Rockingham, Western Australia, assuring me that they would cover all expenses and handle the campaign logistics. I accepted the offer, and as a result, I had the chance to be part of the political process. Now, I'm even mentioned in Wikipedia for my involvement.",
+        "I once ran in a state election in WA. They handled the logistics and I learned a lot. Now I am listed on the candidates page.",
       url: "https://en.wikipedia.org/wiki/Candidates_of_the_2021_Western_Australian_state_election",
       icon: "fa-solid fa-landmark",
       hidden: true
@@ -339,7 +363,7 @@ export const loftwah: Profile = {
       id: "mashable",
       title: "Featured in Mashable",
       description:
-        "X users react to the CrowdStrike outage with glee and disappointment. Raise your hand if you were scared.",
+        "Quoted in a roundup on the CrowdStrike outage. A moment of internet chaos and memes.",
       date: "19 Jul 2024",
       url: "https://mashable.com/article/crowdstrike-outage-reactions",
       icon: "fa-solid fa-lock",
@@ -349,7 +373,7 @@ export const loftwah: Profile = {
       id: "terraform",
       title: "HashiCorp Certified: Terraform Associate (003)",
       description:
-        "Earners of the HashiCorp Certified: Terraform Associate certification know the basic concepts, skills, and use cases associated with open source HashiCorp Terraform. They understand and can utilise Terraform according to the certification objectives. Additionally, they understand why enterprises choose to extend Terraform Open Source with Terraform Enterprise to solve business critical objectives.",
+        "Understands Terraform basics, workflows, and when to choose Enterprise for bigger teams.",
       date: "18 Apr 2024",
       url: "https://www.credly.com/badges/0e437888-1deb-4a2d-8b82-cefb6b87b35d/public_url",
       icon: "fa-solid fa-cloud"
@@ -357,7 +381,7 @@ export const loftwah: Profile = {
     {
       id: "github-followers",
       title: "Crossed 1K followers on GitHub",
-      description: "I have reached 1000 followers on GitHub.",
+      description: "Hit 1000 followers on GitHub.",
       date: "12 Jul 2023",
       url: "https://github.com/loftwah?tab=achievements",
       icon: "fa-brands fa-github"
@@ -366,7 +390,7 @@ export const loftwah: Profile = {
       id: "aws-certified",
       title: "AWS Certified Solutions Architect – Professional",
       description:
-        "Earners of this certification have an extensive understanding of designing technical strategies to accomplish specific business goals. They demonstrated the ability to balance best practices and trade-offs based on business context. Badge owners are able to design solutions across multiple platforms and providers.",
+        "Designs complex systems across services and providers and knows the trade offs that matter.",
       date: "12 Jul 2023",
       url: "https://www.credly.com/badges/c97a35fc-ba6b-427a-b521-19b9ab28cfdb/facebook",
       icon: "fa-brands fa-aws"
