@@ -277,6 +277,14 @@ export const loftwah: Profile = {
       icon: "fa-solid fa-music"
     },
     {
+      id: "loftwahfm",
+      title: "LoftwahFM",
+      description:
+        "My AI-powered music hub. Original beats, remixes, playlists, and experiments blending human creativity with AI — all in one place.",
+      url: "https://fm.loftwah.com",
+      icon: "fa-solid fa-headphones"
+    },
+    {
       id: "grabit",
       title: "GRABIT.SH",
       description:
